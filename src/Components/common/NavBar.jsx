@@ -16,43 +16,46 @@ import { HiSearch } from "react-icons/hi";
 import { useNavigate } from "react-router";
 
 const NavBar = ({ setProgress }) => {
-  const dispatch = useDispatch();
+  // setProgress function to set progress bar value
+  const dispatch = useDispatch(); // dispatch function to dispatch actions
 
-  const { token } = useSelector((state) => state.auth);
-  const { user } = useSelector((state) => state.profile);
-  const { totalItems } = useSelector((state) => state.cart);
+  const { token } = useSelector((state) => state.auth); // get token from auth slice
+  const { user } = useSelector((state) => state.profile); // get user from profile slice
+  const { totalItems } = useSelector((state) => state.cart); // get totalItems from cart slice
   const [prevScrollPos, setPrevScrollPos] = useState(0);
   const [visible, setVisible] = useState(true);
   const [searchValue, setSearchValue] = useState("");
   const navigate = useNavigate();
-
   const location = useLocation();
+
   const matchRoutes = (routes) => {
-    return matchPath({ path: routes }, location.pathname);
+    // matchRoutes function to match the routes
+    return matchPath({ path: routes }, location.pathname); // matchPath function to match the path
   };
 
-  const [sublinks, setsublinks] = useState([]);
+  const [sublinks, setsublinks] = useState([]); // sublinks state to store sublinks use effect to fetch sublinks
+
   const fetchSublinks = async () => {
     try {
-      const result = await apiConnector("GET", categories.CATEGORIES_API);
-      if (result?.data?.data?.length > 0) {
-        setsublinks(result?.data?.data);
+      const result = await apiConnector("GET", categories.CATEGORIES_API); // fetch sublinks from api
+      if (result?.data?.data?.length > 0) { // if sublinks are present
+        setsublinks(result?.data?.data); // set sublinks state
       }
       localStorage.setItem("sublinks", JSON.stringify(result.data.data));
     } catch (error) {
-      // setsublinks(JSON.parse(localStorage.getItem("sublinks")));
-      // console.log("could not fetch sublinks",localStorage.getItem("sublinks"));
       console.log(error);
     }
   };
-  useEffect(() => {
-    fetchSublinks();
+  
+  useEffect(() => { // use effect to fetch sublinks
+    fetchSublinks(); // fetch sublinks
   }, []);
 
   const show = useRef();
+
   const overlay = useRef();
 
-  const shownav = () => {
+  const shownav = () => { 
     show.current.classList.toggle("navshow");
     overlay.current.classList.toggle("hidden");
   };
@@ -97,27 +100,29 @@ const NavBar = ({ setProgress }) => {
         >
           <img src={logo} width={160} alt="Study Notion" height={42}></img>
         </Link>
+
         {/* mobile Navbar */}
-        {user && user?.accountType !== "Instructor" && (
-          <div className=" md:hidden">
-            <Link
-              to="/dashboard/cart"
-              className=" relative left-10"
-              onClick={() => {
-                dispatch(setProgress(100));
-              }}
-            >
-              <div className="">
-                <TiShoppingCart className=" fill-richblack-25 w-8 h-8" />
-              </div>
-              {totalItems > 0 && (
-                <span className=" font-medium text-[12px] shadow-[3px ] shadow-black bg-yellow-100 text-richblack-900 rounded-full px-[4px] absolute -top-[2px] right-[1px]">
-                  {totalItems}
-                </span>
-              )}
-            </Link>
-          </div>
-        )}
+        {user &&
+          user?.accountType !== "Instructor" && ( // if user is not instructor
+            <div className=" md:hidden">
+              <Link
+                to="/dashboard/cart"
+                className=" relative left-10"
+                onClick={() => {
+                  dispatch(setProgress(100));
+                }}
+              >
+                <div className="">
+                  <TiShoppingCart className=" fill-richblack-25 w-8 h-8" />
+                </div>
+                {totalItems > 0 && (
+                  <span className=" font-medium text-[12px] shadow-[3px ] shadow-black bg-yellow-100 text-richblack-900 rounded-full px-[4px] absolute -top-[2px] right-[1px]">
+                    {totalItems}
+                  </span>
+                )}
+              </Link>
+            </div>
+          )}
 
         <div
           className={`flex md:hidden  relative gap- flex-row ${
@@ -140,9 +145,9 @@ const NavBar = ({ setProgress }) => {
               className=" items-center flex flex-col absolute w-[200px] -left-[80px] -top-7  glass2"
               ref={show}
             >
-              {token == null && (
+              {token == null && ( // if token is null
                 <Link
-                  to="/login"
+                  to="/login" // show to login icon if user is not logged in
                   className=""
                   onClick={() => {
                     dispatch(setProgress(100));
@@ -158,7 +163,7 @@ const NavBar = ({ setProgress }) => {
               )}
               {token == null && (
                 <Link
-                  to="/signup"
+                  to="/signup"  // show to signup icon if user is not logged in
                   className="text-yellow-50"
                   onClick={() => {
                     dispatch(setProgress(100));
@@ -176,8 +181,11 @@ const NavBar = ({ setProgress }) => {
               {token != null && (
                 <div className=" mt-2">
                   <p className=" text-richblack-50 text-center mb-2">Account</p>
+                  
                   {/* <Link to='/dashboard' onClick={()=>{dispatch(setProgress(100));shownav()}} className="p-2"> */}
+                  
                   <ProfileDropDown />
+                  
                   {/* </Link> */}
                 </div>
               )}
