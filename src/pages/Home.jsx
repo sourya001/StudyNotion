@@ -11,26 +11,14 @@ import InstructorSection from "../Components/core/HomePage/InstructorSection";
 import ExploreMore from "../Components/core/HomePage/ExploreMore";
 import { useDispatch } from "react-redux";
 import { setProgress } from "../slices/loadingBarSlice";
-import { getCatalogaPageData } from "../services/operations/pageAndComponentData";
-import CourseSlider from "../Components/core/Catalog/CourseSlider";
 import { useEffect } from "react";
 import { useState } from "react";
 import RatingSlider from "../Components/core/Ratings/RatingSlider";
 
 function Home() {
-  const [CatalogPageData, setCatalogPageData] = useState(null);
   const categoryID = "6475dbeb49dcc886b5698441";
 
-  useEffect(() => {
-    const fetchCatalogPageData = async () => {
-      const result = await getCatalogaPageData(categoryID, dispatch);
-      setCatalogPageData(result);
-      // console.log("page data",CatalogPageData);
-    };
-    if (categoryID) {
-      fetchCatalogPageData();
-    }
-  }, [categoryID]);
+  
   const dispatch = useDispatch();
   return (
     <div>
@@ -102,18 +90,6 @@ function Home() {
             codeColor={"white"}
             backgroudGradient={"grad"}
           />
-        </div>
-        <div className=" mx-auto box-content w-full max-w-maxContentTab px- py-12 lg:max-w-maxContent">
-          <h2 className="section_heading mb-6 md:text-3xl text-xl">
-            Most Popular Courses
-          </h2>
-          <CourseSlider Courses={CatalogPageData?.selectedCourses} />
-        </div>
-        <div className=" mx-auto box-content w-full max-w-maxContentTab px- py-12 lg:max-w-maxContent">
-          <h2 className="section_heading mb-6 md:text-3xl text-xl">
-            Students are learning
-          </h2>
-          <CourseSlider Courses={CatalogPageData?.differentCourses} />
         </div>
 
         {/* Code Section 2 */}

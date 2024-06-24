@@ -8,7 +8,6 @@ import FoundingStory from "../assets/Images/FoundingStory.png";
 import StatsComponent from "../Components/core/AboutPage/Stats";
 import LearningGrid from "../Components/core/AboutPage/LearningGrid";
 import ContactFormSection from "../Components/core/AboutPage/ContactFormSection";
-import Footer from "../Components/common/Footer";
 import RatingSlider from "../Components/core/Ratings/RatingSlider";
 
 const About = () => {
