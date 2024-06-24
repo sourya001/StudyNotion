@@ -11,7 +11,7 @@ import ScrollToTop from "./Components/ScrollToTop";
 import swDev from "./swDev";
 
 const store = configureStore({
-  reducer: rootReducer,
+  reducer: rootReducer, // rootReducer is imported from reducers/index.js
 });
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
