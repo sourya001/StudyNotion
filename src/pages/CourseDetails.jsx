@@ -278,9 +278,6 @@ const CourseDetails = () => {
                     Lecture(s)
                   </span>
                 </div>
-                <button className="text-yellow-25">
-                  <span>Collapse all sections</span>
-                </button>
               </div>
             </div>
             <div className="py-4">
