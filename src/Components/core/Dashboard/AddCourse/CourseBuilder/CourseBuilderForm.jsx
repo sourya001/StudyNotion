@@ -4,16 +4,13 @@ import { useState } from "react";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-
 import {
   setCourse,
   setEditCourse,
   setStep,
 } from "../../../../../slices/courseSlice";
-
 import NestedView from "./NestedView";
 import toast from "react-hot-toast";
-
 import {
   createSection,
   updateSection,
@@ -27,8 +24,14 @@ const CourseBuilderForm = () => {
   const { course } = useSelector((state) => state.course);
 
   const gonext = () => {
-    if (course.courseContent.length > 0) { // Check if course has atleast one section
-      dispatch(setStep(3));
+    if (course.courseContent.length > 0) {
+      if (
+        course.courseContent.some((section) => section.subSection.length > 0)
+      ) {
+        dispatch(setStep(3));
+      } else {
+        toast.error("Please add atleast one lesson to esch section");
+      }
     } else {
       toast.error("Please add atleast one section to continue");
     }
@@ -43,7 +46,7 @@ const CourseBuilderForm = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
-    let result = null;
+    let result=null;
     setLoading(true);
     if (editSectionName) {
       result = await updateSection(
@@ -52,7 +55,7 @@ const CourseBuilderForm = () => {
           courseId: course._id,
           sectionId: editSectionName,
         },
-        token 
+        token
       );
     } else {
       result = await createSection(
@@ -64,7 +67,6 @@ const CourseBuilderForm = () => {
         token
       );
     }
-
     if (result) {
       dispatch(setCourse(result));
       setValue("sectionName", "");
@@ -73,14 +75,13 @@ const CourseBuilderForm = () => {
     setLoading(false);
   };
 
-  const handelChangeEditSectionName = (sectionId, sectionName) => {
-   
-    if (editSectionName === sectionId) {
+
+  const handelChangeEditSectionName = (sectionId,sectionName) => {
+    if (editSectionName===sectionId) {
       setEditSectionName(false);
       setValue("sectionName", "");
       return;
     }
-    
     setEditSectionName(sectionId);
     setValue("sectionName", sectionName);
   };
@@ -100,9 +101,7 @@ const CourseBuilderForm = () => {
           {...register("sectionName", { required: true })}
         />
         {errors.sectionName && (
-          <p className="ml-2 text-xs tracking-wide text-pink-200">
-            This field is required
-          </p>
+          <p className="ml-2 text-xs tracking-wide text-pink-200">This field is required</p>
         )}
         <div className="flex items-end gap-x-4">
           <button
@@ -128,9 +127,7 @@ const CourseBuilderForm = () => {
           )}
         </div>
       </form>
-      {course.courseContent.length > 0 && (
-        <NestedView handelChangeEditSectionName={handelChangeEditSectionName} />
-      )}
+      {course.courseContent.length > 0 && <NestedView handelChangeEditSectionName={handelChangeEditSectionName} />}
       <div className="flex justify-end gap-x-3">
         <button
           onClick={() => {

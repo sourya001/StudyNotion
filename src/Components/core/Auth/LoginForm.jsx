@@ -1,34 +1,34 @@
-import { useState } from "react";
-import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import { useDispatch } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react"
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"
+import { useDispatch } from "react-redux"
+import { Link, useNavigate } from "react-router-dom"
 
-import { login } from "../../../services/operations/authAPI";
-import { setProgress } from "../../../slices/loadingBarSlice";
+import { login } from "../../../services/operations/authAPI"
+import { setProgress } from "../../../slices/loadingBarSlice"
 
 function LoginForm() {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-  });
+  })
 
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false)
 
-  const { email, password } = formData;
+  const { email, password } = formData
 
   const handleOnChange = (e) => {
     setFormData((prevData) => ({
       ...prevData,
       [e.target.name]: e.target.value,
-    }));
-  };
+    }))
+  }
 
   const handleOnSubmit = (e) => {
-    e.preventDefault();
-    dispatch(login(email, password, navigate));
-  };
+    e.preventDefault()
+    dispatch(login(email, password, navigate))
+  }
 
   return (
     <form
@@ -84,17 +84,14 @@ function LoginForm() {
           </p>
         </Link>
       </label>
-      <button
-        onClick={() => {
-          dispatch(setProgress(60));
-        }}
+      <button onClick={()=>{dispatch(setProgress(60))}}
         type="submit"
         className="mt-6 rounded-[8px] bg-yellow-50 py-[8px] px-[12px] font-medium text-richblack-900"
       >
         Sign In
       </button>
     </form>
-  );
+  )
 }
 
-export default LoginForm;
+export default LoginForm

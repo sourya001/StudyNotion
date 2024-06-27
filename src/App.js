@@ -24,6 +24,8 @@ import Cart from "./Components/core/Dashboard/Cart/index";
 import { ACCOUNT_TYPE } from "./utils/constants";
 import AddCourse from "./Components/core/Dashboard/AddCourse/index";
 import MyCourses from "./Components/core/Dashboard/MyCourses/MyCourses";
+import EditCourse from "./Components/core/Dashboard/EditCourse.jsx/EditCourse";
+import Catalog from "./pages/Catalog";
 import ScrollToTop from "./Components/ScrollToTop";
 import CourseDetails from "./pages/CourseDetails";
 import SearchCourse from "./pages/SearchCourse";
@@ -64,7 +66,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
 
-       
+        <Route path="/catalog/:catalog" element={<Catalog />} />
 
         <Route
           path="/login"
@@ -124,6 +126,10 @@ function App() {
             <>
               <Route path="dashboard/add-course" element={<AddCourse />} />
               <Route path="dashboard/my-courses" element={<MyCourses />} />
+              <Route
+                path="dashboard/edit-course/:courseId"
+                element={<EditCourse />}
+              />
               <Route
                 path="dashboard/instructor"
                 element={<InstructorDashboard />}
