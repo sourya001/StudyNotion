@@ -6,7 +6,7 @@ function Signup() {
   const { loading } = useSelector((state) => state.auth);
   return loading ? (
     <div className=" h-[100vh] flex justify-center items-center">
-      <div class="custom-loader"></div>
+      <div className="custom-loader"></div>
     </div>
   ) : (
     <Template
