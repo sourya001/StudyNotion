@@ -13,7 +13,6 @@ import { useDispatch } from "react-redux";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
 const ResetPassword = () => {
-  
   const location = useLocation();
 
   const dispatch = useDispatch();

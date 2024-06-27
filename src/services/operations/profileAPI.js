@@ -1,8 +1,8 @@
 import { setProgress } from "../../slices/loadingBarSlice.js";
-import { apiConnector } from "../apiConnector";
-import { profileEndpoints } from "../apis";
+import { apiConnector } from "../apiConnector.js";
+import { profileEndpoints } from "../apis.js";
 import { toast } from "react-hot-toast";
-import { settingsEndpoints } from "../apis";
+import { settingsEndpoints } from "../apis.js";
 import { logout } from "./authAPI.js";
 
 //getEnrolledCourses
