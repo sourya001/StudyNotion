@@ -1,5 +1,6 @@
-const mongoose = require("mongoose");
+const mongoose = require("mongoose")
 
+// Define the Courses schema
 const coursesSchema = new mongoose.Schema({
   courseName: { type: String },
   courseDescription: { type: String },
@@ -35,6 +36,7 @@ const coursesSchema = new mongoose.Schema({
   },
   category: {
     type: mongoose.Schema.Types.ObjectId,
+    // required: true,
     ref: "Category",
   },
   studentsEnroled: [
@@ -52,6 +54,7 @@ const coursesSchema = new mongoose.Schema({
     enum: ["Draft", "Published"],
   },
   createdAt: { type: Date, default: Date.now },
-});
+})
 
-module.exports = mongoose.model("Course", coursesSchema);
+// Export the Courses model
+module.exports = mongoose.model("Course", coursesSchema)
