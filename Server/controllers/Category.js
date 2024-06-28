@@ -3,8 +3,6 @@ const Category = require("../models/Category");
 function getRandomInt(max) {
   return Math.floor(Math.random() * max);
 }
-
-// create categroy
 exports.createCategory = async (req, res) => {
   try {
     const { name, description } = req.body;
@@ -30,7 +28,6 @@ exports.createCategory = async (req, res) => {
   }
 };
 
-// show all categories
 exports.showAllCategories = async (req, res) => {
   try {
     const allCategorys = await Category.find();
@@ -46,11 +43,9 @@ exports.showAllCategories = async (req, res) => {
   }
 };
 
-// category page details
 exports.categoryPageDetails = async (req, res) => {
   try {
     const { categoryId } = req.body;
-
     const selectedCategory = await Category.findById(categoryId)
       .populate({
         path: "courses",
@@ -60,14 +55,12 @@ exports.categoryPageDetails = async (req, res) => {
       .exec();
 
     console.log("SELECTED COURSE", selectedCategory);
-
     if (!selectedCategory) {
       console.log("Category not found.");
       return res
         .status(404)
         .json({ success: false, message: "Category not found" });
     }
-
     if (selectedCategory.courses.length === 0) {
       console.log("No courses found for the selected category.");
       return res.status(404).json({
@@ -75,7 +68,6 @@ exports.categoryPageDetails = async (req, res) => {
         message: "No courses found for the selected category.",
       });
     }
-
     const categoriesExceptSelected = await Category.find({
       _id: { $ne: categoryId },
     });
@@ -89,7 +81,6 @@ exports.categoryPageDetails = async (req, res) => {
       })
       .exec();
     console.log();
-
     const allCategories = await Category.find()
       .populate({
         path: "courses",

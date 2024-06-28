@@ -35,7 +35,6 @@ const coursesSchema = new mongoose.Schema({
   },
   category: {
     type: mongoose.Schema.Types.ObjectId,
-
     ref: "Category",
   },
   studentsEnroled: [
@@ -55,5 +54,4 @@ const coursesSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
 });
 
-module.exports =
-  mongoose.models.Course || mongoose.model("Course", coursesSchema);
+module.exports = mongoose.model("Course", coursesSchema);

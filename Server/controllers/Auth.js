@@ -34,7 +34,6 @@ exports.signup = async (req, res) => {
         message: "All Fields are required",
       });
     }
-
     if (password !== confirmPassword) {
       return res.status(400).json({
         success: false,
@@ -42,7 +41,6 @@ exports.signup = async (req, res) => {
           "Password and Confirm Password do not match. Please try again.",
       });
     }
-
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({
@@ -64,7 +62,6 @@ exports.signup = async (req, res) => {
         message: "The OTP is not valid",
       });
     }
-
     const hashedPassword = await bcrypt.hash(password, 10);
 
     let approved = "";
@@ -134,7 +131,6 @@ exports.login = async (req, res) => {
 
       user.token = token;
       user.password = undefined;
-
       const options = {
         expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
         httpOnly: true,
@@ -153,7 +149,6 @@ exports.login = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-
     return res.status(500).json({
       success: false,
       message: `Login Failure Please Try Again`,
@@ -161,13 +156,11 @@ exports.login = async (req, res) => {
   }
 };
 
-// Send OTP
+// send OTP
 exports.sendotp = async (req, res) => {
   try {
     const { email } = req.body;
-
     const checkUserPresent = await User.findOne({ email });
-
     if (checkUserPresent) {
       return res.status(401).json({
         success: false,
@@ -203,13 +196,11 @@ exports.sendotp = async (req, res) => {
   }
 };
 
-//  Changing Password
+//Changing Password
 exports.changePassword = async (req, res) => {
   try {
     const userDetails = await User.findById(req.user.id);
-
     const { oldPassword, newPassword } = req.body;
-
     const isPasswordMatch = await bcrypt.compare(
       oldPassword,
       userDetails.password
@@ -219,14 +210,12 @@ exports.changePassword = async (req, res) => {
         .status(401)
         .json({ success: false, message: "The password is incorrect" });
     }
-
     const encryptedPassword = await bcrypt.hash(newPassword, 10);
     const updatedUserDetails = await User.findByIdAndUpdate(
       req.user.id,
       { password: encryptedPassword },
       { new: true }
     );
-
     try {
       const emailResponse = await mailSender(
         updatedUserDetails.email,
@@ -245,7 +234,6 @@ exports.changePassword = async (req, res) => {
         error: error.message,
       });
     }
-
     return res
       .status(200)
       .json({ success: true, message: "Password updated successfully" });

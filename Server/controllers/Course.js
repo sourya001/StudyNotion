@@ -7,11 +7,10 @@ const { uploadImageToCloudinary } = require("../utils/imageUploader");
 const CourseProgress = require("../models/CourseProgress");
 const { convertSecondsToDuration } = require("../utils/secToDuration");
 
-// create a new course
+// new course
 exports.createCourse = async (req, res) => {
   try {
     const userId = req.user.id;
-
     let {
       courseName,
       courseDescription,
@@ -24,13 +23,11 @@ exports.createCourse = async (req, res) => {
     } = req.body;
 
     const thumbnail = req.files.thumbnailImage;
-
     const tag = JSON.parse(_tag);
     const instructions = JSON.parse(_instructions);
 
     console.log("tag", tag);
     console.log("instructions", instructions);
-
     if (
       !courseName ||
       !courseDescription ||
@@ -49,7 +46,6 @@ exports.createCourse = async (req, res) => {
     if (!status || status === undefined) {
       status = "Draft";
     }
-
     const instructorDetails = await User.findById(userId, {
       accountType: "Instructor",
     });
@@ -60,7 +56,6 @@ exports.createCourse = async (req, res) => {
         message: "Instructor Details Not Found",
       });
     }
-
     const categoryDetails = await Category.findById(category);
     if (!categoryDetails) {
       return res.status(404).json({
@@ -68,13 +63,11 @@ exports.createCourse = async (req, res) => {
         message: "Category Details Not Found",
       });
     }
-
     const thumbnailImage = await uploadImageToCloudinary(
       thumbnail,
       process.env.FOLDER_NAME
     );
     console.log(thumbnailImage);
-
     const newCourse = await Course.create({
       courseName,
       courseDescription,
@@ -110,7 +103,6 @@ exports.createCourse = async (req, res) => {
       { new: true }
     );
     console.log("HEREEEEEEEE", categoryDetails2);
-
     res.status(200).json({
       success: true,
       data: newCourse,
@@ -136,7 +128,6 @@ exports.editCourse = async (req, res) => {
     if (!course) {
       return res.status(404).json({ error: "Course not found" });
     }
-
     if (req.files) {
       console.log("thumbnail update");
       const thumbnail = req.files.thumbnailImage;
@@ -146,7 +137,6 @@ exports.editCourse = async (req, res) => {
       );
       course.thumbnail = thumbnailImage.secure_url;
     }
-
     for (const key in updates) {
       if (updates.hasOwnProperty(key)) {
         if (key === "tag" || key === "instructions") {
@@ -192,7 +182,8 @@ exports.editCourse = async (req, res) => {
     });
   }
 };
-// all courses
+
+// Get Course List
 exports.getAllCourses = async (req, res) => {
   try {
     const allCourses = await Course.find(
@@ -223,7 +214,7 @@ exports.getAllCourses = async (req, res) => {
   }
 };
 
-// course details
+// Get Course Details
 exports.getCourseDetails = async (req, res) => {
   try {
     const { courseId } = req.body;
@@ -279,7 +270,7 @@ exports.getCourseDetails = async (req, res) => {
   }
 };
 
-// full course details
+// Get Full Course Details
 exports.getFullCourseDetails = async (req, res) => {
   try {
     const { courseId } = req.body;
@@ -345,11 +336,10 @@ exports.getFullCourseDetails = async (req, res) => {
   }
 };
 
-// Get a list of Course for a given Instructor
+// Get Instructor Courses
 exports.getInstructorCourses = async (req, res) => {
   try {
     const instructorId = req.user.id;
-
     const instructorCourses = await Course.find({
       instructor: instructorId,
     }).sort({ createdAt: -1 });
@@ -368,23 +358,20 @@ exports.getInstructorCourses = async (req, res) => {
   }
 };
 
-// Delete  Course
+// Delete the Course
 exports.deleteCourse = async (req, res) => {
   try {
     const { courseId } = req.body;
-
     const course = await Course.findById(courseId);
     if (!course) {
       return res.status(404).json({ message: "Course not found" });
     }
-
     const studentsEnrolled = course.studentsEnroled;
     for (const studentId of studentsEnrolled) {
       await User.findByIdAndUpdate(studentId, {
         $pull: { courses: courseId },
       });
     }
-
     const courseSections = course.courseContent;
     for (const sectionId of courseSections) {
       const section = await Section.findById(sectionId);
@@ -394,10 +381,8 @@ exports.deleteCourse = async (req, res) => {
           await SubSection.findByIdAndDelete(subSectionId);
         }
       }
-
       await Section.findByIdAndDelete(sectionId);
     }
-
     await Course.findByIdAndDelete(courseId);
 
     return res.status(200).json({
