@@ -17,7 +17,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 // Setting up port number
-const PORT = process.env.PORT || 4000;
+const PORT = "https://study-notion-ten-psi.vercel.app" || 4000;
 
 // Connecting to database
 database.connect();
