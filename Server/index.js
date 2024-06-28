@@ -29,7 +29,8 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
 	cors({
-		origin: "*",
+		origin: "https://study-notion-tau-mauve.vercel.app",
+		methods: ["GET", "POST", "PUT", "DELETE"],
 		credentials: true,
 	})
 );
