@@ -35,6 +35,12 @@ function Navbar() {
     })()
   }, [])
 
+  // Close hamburger menu when user scrolls
+  useEffect(() => {
+    const handleScroll = () => setMobileMenuOpen(false)
+    window.addEventListener("scroll", handleScroll, { passive: true })
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
 
   const matchRoute = (route) => {
     return matchPath({ path: route }, location.pathname)
@@ -42,7 +48,7 @@ function Navbar() {
 
   return (
     <div
-      className={`sticky top-0 z-50 relative flex h-14 items-center justify-center border-b-[1px] border-b-richblack-700 ${
+      className={`fixed top-0 left-0 right-0 z-50 flex h-14 items-center justify-center border-b-[1px] border-b-richblack-700 ${
         location.pathname !== "/" ? "bg-richblack-800" : "bg-richblack-900"
       } transition-all duration-200`}
     >

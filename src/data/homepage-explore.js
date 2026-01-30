@@ -102,7 +102,7 @@ export const HomePageExplore = [
             },
             {
                 heading : "Nuxt.js",
-                description : "This course explores advanced topics in HTML5 and CSS3, including animations, transitions, and layout techniques",
+                description : "Master the Vue-based framework for building fast, SEO-friendly web apps. Covers server-side rendering, static sites, and full-stack patterns.",
                 level : 'Beginner',
                 lessionNumber : 6
             },
