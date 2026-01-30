@@ -1,4 +1,5 @@
 import React from "react"
+import { motion } from "framer-motion"
 
 import FoundingStory from "../assets/Images/FoundingStory.png"
 import BannerImage1 from "../assets/Images/aboutus1.webp"
@@ -13,7 +14,11 @@ import HighlightText from "../components/core/HomePage/HighlightText"
 
 const About = () => {
   return (
-    <div>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
       <section className="bg-richblack-700">
         <div className="relative mx-auto flex w-11/12 max-w-maxContent flex-col justify-between gap-10 text-center text-white">
           <header className="mx-auto py-20 text-4xl font-semibold lg:w-[70%]">
@@ -108,7 +113,7 @@ const About = () => {
       </section>
 
       <Footer />
-    </div>
+    </motion.div>
   )
 }
 
