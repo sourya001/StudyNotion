@@ -4,6 +4,7 @@ import { motion } from "framer-motion"
 import { Link } from "react-router-dom"
 import { useSelector } from "react-redux"
 
+import { ACCOUNT_TYPE } from "../utils/constants"
 // Image and Video Import
 import Banner from "../assets/Images/banner.mp4"
 // Component Imports
@@ -18,6 +19,30 @@ import TimelineSection from "../components/core/HomePage/Timeline"
 
 function Home() {
   const { token } = useSelector((state) => state.auth)
+  const { user } = useSelector((state) => state.profile)
+
+  const getLearnMoreLink = (whenLoggedOut = "/signup") => {
+    if (!token) return whenLoggedOut
+    if (user?.accountType === ACCOUNT_TYPE.INSTRUCTOR) return "/dashboard/instructor"
+    return "/all-courses"
+  }
+
+  const getTryItYourselfLink = () => {
+    if (!token) return "/signup"
+    if (user?.accountType === ACCOUNT_TYPE.INSTRUCTOR) return "/dashboard/add-course"
+    return "/all-courses"
+  }
+
+  const getContinueLessonLink = () => {
+    if (!token) return "/signup"
+    if (user?.accountType === ACCOUNT_TYPE.INSTRUCTOR) return "/dashboard/my-courses"
+    return "/dashboard/enrolled-courses"
+  }
+
+  const getExploreFullCatalogLink = () => {
+    if (!token) return "/signup"
+    return "/all-courses"
+  }
 
   return (
     <div>
@@ -58,7 +83,7 @@ function Home() {
 
         {/* CTA Buttons */}
         <div className="mt-8 flex flex-row gap-7">
-          <CTAButton active={true} linkto={"/signup"}>
+          <CTAButton active={true} linkto={getLearnMoreLink()}>
             Learn More
           </CTAButton>
           <CTAButton
@@ -97,12 +122,12 @@ function Home() {
             }
             ctabtn1={{
               btnText: "Try it Yourself",
-              link: "/signup",
+              link: getTryItYourselfLink(),
               active: true,
             }}
             ctabtn2={{
               btnText: "Learn More",
-              link: "/signup",
+              link: getLearnMoreLink(),
               active: false,
             }}
             codeColor={"text-yellow-25"}
@@ -126,12 +151,12 @@ function Home() {
             }
             ctabtn1={{
               btnText: "Continue Lesson",
-              link: "/signup",
+              link: getContinueLessonLink(),
               active: true,
             }}
             ctabtn2={{
               btnText: "Learn More",
-              link: "/signup",
+              link: getLearnMoreLink(),
               active: false,
             }}
             codeColor={"text-white"}
@@ -151,13 +176,13 @@ function Home() {
           <div className="mx-auto flex w-11/12 max-w-maxContent flex-col items-center justify-between gap-8">
             <div className="lg:h-[150px]"></div>
             <div className="flex flex-row gap-7 text-white lg:mt-8">
-              <CTAButton active={true} linkto={"/signup"}>
+              <CTAButton active={true} linkto={getExploreFullCatalogLink()}>
                 <div className="flex items-center gap-2">
                   Explore Full Catalog
                   <FaArrowRight />
                 </div>
               </CTAButton>
-              <CTAButton active={false} linkto={"/login"}>
+              <CTAButton active={false} linkto={getLearnMoreLink("/login")}>
                 Learn More
               </CTAButton>
             </div>
@@ -177,7 +202,7 @@ function Home() {
                 be a competitive specialist requires more than professional
                 skills.
               </div>
-              <CTAButton active={true} linkto={"/signup"}>
+              <CTAButton active={true} linkto={getLearnMoreLink()}>
                 <div className="">Learn More</div>
               </CTAButton>
             </div>

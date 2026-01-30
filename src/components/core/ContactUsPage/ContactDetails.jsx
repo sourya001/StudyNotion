@@ -6,7 +6,7 @@ import * as Icon2 from "react-icons/io5"
 const contactDetails = [
   {
     icon: "HiChatBubbleLeftRight",
-    heading: "Chat on us",
+    heading: "Chat with us",
     description: "Our friendly team is here to help.",
     details: "info@studynotion.com",
   },
@@ -14,8 +14,7 @@ const contactDetails = [
     icon: "BiWorld",
     heading: "Visit us",
     description: "Come and say hello at our office HQ.",
-    details:
-      "Akshya Nagar 1st Block 1st Cross, Rammurthy nagar, Bangalore-560016",
+    details: "Hostel J nit jamshedpur adityapur 831014",
   },
   {
     icon: "IoCall",

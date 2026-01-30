@@ -1,6 +1,8 @@
-import React from "react";
-import HighlightText from "../../../components/core/HomePage/HighlightText";
-import CTAButton from "../../../components/core/HomePage/Button";
+import React from "react"
+import { useSelector } from "react-redux"
+import HighlightText from "../../../components/core/HomePage/HighlightText"
+import CTAButton from "../../../components/core/HomePage/Button"
+import { ACCOUNT_TYPE } from "../../../utils/constants"
 
 const LearningGridArray = [
   {
@@ -45,6 +47,15 @@ const LearningGridArray = [
 ];
 
 const LearningGrid = () => {
+  const { token } = useSelector((state) => state.auth)
+  const { user } = useSelector((state) => state.profile)
+
+  const getLearnMoreLink = () => {
+    if (!token) return "/"
+    if (user?.accountType === ACCOUNT_TYPE.INSTRUCTOR) return "/dashboard/instructor"
+    return "/all-courses"
+  }
+
   return (
     <div className="grid mx-auto w-[350px] xl:w-fit grid-cols-1 xl:grid-cols-4 mb-12">
       {LearningGridArray.map((card, i) => {
@@ -70,7 +81,7 @@ const LearningGrid = () => {
                 </p>
 
                 <div className="w-fit mt-2">
-                  <CTAButton active={true} linkto={card.BtnLink}>
+                  <CTAButton active={true} linkto={card.BtnText === "Learn More" ? getLearnMoreLink() : card.BtnLink}>
                     {card.BtnText}
                   </CTAButton>
                 </div>
