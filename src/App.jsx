@@ -19,6 +19,7 @@ import MyProfile from "./components/core/Dashboard/MyProfile"
 import Settings from "./components/core/Dashboard/Settings"
 import VideoDetails from "./components/core/ViewCourse/VideoDetails"
 import About from "./pages/About"
+import AllCourses from "./pages/AllCourses"
 import Catalog from "./pages/Catalog"
 import Contact from "./pages/Contact"
 import CourseDetails from "./pages/CourseDetails"
@@ -58,6 +59,7 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="courses/:courseId" element={<CourseDetails />} />
+        <Route path="all-courses" element={<AllCourses />} />
         <Route path="catalog/:catalogName" element={<Catalog />} />
         {/* Payment success (after Stripe redirect) - requires login */}
         <Route

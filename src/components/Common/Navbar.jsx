@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import { AiOutlineMenu, AiOutlineShoppingCart } from "react-icons/ai"
-import { BsChevronDown, BsXLg } from "react-icons/bs"
+import { BsChevronDown, BsChevronRight, BsXLg } from "react-icons/bs"
 import { useSelector } from "react-redux"
 import { Link, matchPath, useLocation } from "react-router-dom"
 
@@ -22,6 +22,7 @@ function Navbar() {
   const [subLinks, setSubLinks] = useState([])
   const [loading, setLoading] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [mobileCatalogOpen, setMobileCatalogOpen] = useState(false)
 
   useEffect(() => {
     ;(async () => {
@@ -43,6 +44,11 @@ function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
+  // Reset catalog dropdown when mobile menu closes
+  useEffect(() => {
+    if (!mobileMenuOpen) setMobileCatalogOpen(false)
+  }, [mobileMenuOpen])
+
   const matchRoute = (route) => {
     return matchPath({ path: route }, location.pathname)
   }
@@ -61,7 +67,9 @@ function Navbar() {
         {/* Navigation links */}
         <nav className="hidden md:block">
           <ul className="flex gap-x-6 text-richblack-25">
-            {NavbarLinks.map((link, index) => (
+            {NavbarLinks.map((link, index) => {
+              if (link.title === "All Courses" && user?.accountType === ACCOUNT_TYPE.INSTRUCTOR) return null
+              return (
               <li key={index}>
                 {link.title === "Catalog" ? (
                   <>
@@ -117,7 +125,8 @@ function Navbar() {
                   </Link>
                 )}
               </li>
-            ))}
+            )
+            })}
           </ul>
         </nav>
         {/* Login / Signup / Dashboard */}
@@ -174,34 +183,53 @@ function Navbar() {
             className="absolute left-0 right-0 top-14 z-[1000] border-b border-richblack-700 bg-richblack-800 px-4 py-4 md:hidden"
           >
           <div className="flex flex-col gap-4">
-            {NavbarLinks.map((link) =>
-              link.title === "Catalog" ? (
+            {NavbarLinks.map((link) => {
+              if (link.title === "All Courses" && user?.accountType === ACCOUNT_TYPE.INSTRUCTOR) return null
+              return link.title === "Catalog" ? (
                 <div key={link.title} className="flex flex-col gap-2">
-                  <p className="text-sm font-semibold text-richblack-300">
+                  <button
+                    type="button"
+                    onClick={() => setMobileCatalogOpen((prev) => !prev)}
+                    className="flex items-center justify-between text-left text-sm font-semibold text-richblack-300 hover:text-richblack-5"
+                  >
                     {link.title}
-                  </p>
-                  {loading ? (
-                    <p className="text-richblack-400">Loading...</p>
-                  ) : subLinks?.length ? (
-                    <div className="flex flex-col gap-1 pl-2">
-                      {subLinks
-                        ?.filter((sub) => sub?.courses?.length > 0)
-                        ?.map((sub, i) => (
-                          <Link
-                            key={i}
-                            to={`/catalog/${sub.name
-                              .split(" ")
-                              .join("-")
-                              .toLowerCase()}`}
-                            className="py-2 text-richblack-5 hover:text-yellow-25"
-                            onClick={() => setMobileMenuOpen(false)}
-                          >
-                            {sub.name}
-                          </Link>
-                        ))}
-                    </div>
-                  ) : (
-                    <p className="text-richblack-400">No courses</p>
+                    {mobileCatalogOpen ? (
+                      <BsChevronDown className="shrink-0" />
+                    ) : (
+                      <BsChevronRight className="shrink-0" />
+                    )}
+                  </button>
+                  {mobileCatalogOpen && (
+                    <>
+                      {loading ? (
+                        <p className="pl-2 text-richblack-400">Loading...</p>
+                      ) : subLinks?.length ? (
+                        <div className="max-h-40 overflow-y-auto rounded border border-richblack-600 bg-richblack-900 pl-2">
+                          <div className="flex flex-col gap-1 py-2 pr-2">
+                            {subLinks
+                              ?.filter((sub) => sub?.courses?.length > 0)
+                              ?.map((sub, i) => (
+                                <Link
+                                  key={i}
+                                  to={`/catalog/${sub.name
+                                    .split(" ")
+                                    .join("-")
+                                    .toLowerCase()}`}
+                                  className="py-2 text-richblack-5 hover:text-yellow-25"
+                                  onClick={() => {
+                                    setMobileCatalogOpen(false)
+                                    setMobileMenuOpen(false)
+                                  }}
+                                >
+                                  {sub.name}
+                                </Link>
+                              ))}
+                          </div>
+                        </div>
+                      ) : (
+                        <p className="pl-2 text-richblack-400">No courses</p>
+                      )}
+                    </>
                   )}
                 </div>
               ) : (
@@ -214,7 +242,7 @@ function Navbar() {
                   {link.title}
                 </Link>
               )
-            )}
+            })}
             <div className="mt-2 flex flex-col gap-2 border-t border-richblack-600 pt-4">
               {user && user?.accountType !== ACCOUNT_TYPE.INSTRUCTOR && (
                 <Link
