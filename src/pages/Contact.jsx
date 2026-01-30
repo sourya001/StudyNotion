@@ -12,15 +12,15 @@ const Contact = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
-        className="mx-auto mt-20 flex w-11/12 max-w-maxContent flex-col justify-between gap-10 text-white lg:flex-row"
+        className="mx-auto mt-10 sm:mt-16 lg:mt-20 flex w-11/12 max-w-maxContent flex-col gap-8 sm:gap-10 text-white px-2 sm:px-0 lg:flex-row lg:justify-between"
       >
         {/* Contact Details */}
-        <div className="lg:w-[40%]">
+        <div className="w-full min-w-0 lg:w-[40%]">
           <ContactDetails />
         </div>
 
         {/* Contact Form */}
-        <div className="lg:w-[60%]">
+        <div className="w-full min-w-0 lg:w-[60%]">
           <ContactForm />
         </div>
       </motion.div>

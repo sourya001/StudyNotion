@@ -127,6 +127,36 @@ function Navbar() {
               </li>
             )
             })}
+            {token && user?.accountType === ACCOUNT_TYPE.STUDENT && (
+              <li>
+                <Link to="/dashboard/enrolled-courses">
+                  <p
+                    className={
+                      matchRoute("/dashboard/enrolled-courses")
+                        ? "text-yellow-25"
+                        : "text-richblack-25"
+                    }
+                  >
+                    Enrolled Courses
+                  </p>
+                </Link>
+              </li>
+            )}
+            {token && user?.accountType === ACCOUNT_TYPE.INSTRUCTOR && (
+              <li>
+                <Link to="/dashboard/my-courses">
+                  <p
+                    className={
+                      matchRoute("/dashboard/my-courses")
+                        ? "text-yellow-25"
+                        : "text-richblack-25"
+                    }
+                  >
+                    My Courses
+                  </p>
+                </Link>
+              </li>
+            )}
           </ul>
         </nav>
         {/* Login / Signup / Dashboard */}
@@ -243,6 +273,24 @@ function Navbar() {
                 </Link>
               )
             })}
+            {token && user?.accountType === ACCOUNT_TYPE.STUDENT && (
+              <Link
+                to="/dashboard/enrolled-courses"
+                className="text-richblack-5 hover:text-yellow-25"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Enrolled Courses
+              </Link>
+            )}
+            {token && user?.accountType === ACCOUNT_TYPE.INSTRUCTOR && (
+              <Link
+                to="/dashboard/my-courses"
+                className="text-richblack-5 hover:text-yellow-25"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                My Courses
+              </Link>
+            )}
             <div className="mt-2 flex flex-col gap-2 border-t border-richblack-600 pt-4">
               {user && user?.accountType !== ACCOUNT_TYPE.INSTRUCTOR && (
                 <Link

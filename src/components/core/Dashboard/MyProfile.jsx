@@ -11,21 +11,21 @@ export default function MyProfile() {
 
   return (
     <>
-      <h1 className="mb-14 text-3xl font-medium text-richblack-5">
+      <h1 className="mb-8 text-2xl font-medium text-richblack-5 sm:mb-14 sm:text-3xl">
         My Profile
       </h1>
-      <div className="flex items-center justify-between rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-8 px-12">
-        <div className="flex items-center gap-x-4">
+      <div className="flex flex-col gap-4 rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-8 sm:px-12">
+        <div className="flex min-w-0 flex-shrink items-center gap-x-4">
           <img
             src={user?.image}
             alt={`profile-${user?.firstName}`}
-            className="aspect-square w-[78px] rounded-full object-cover"
+            className="aspect-square h-14 w-14 flex-shrink-0 rounded-full object-cover sm:h-[78px] sm:w-[78px]"
           />
-          <div className="space-y-1">
-            <p className="text-lg font-semibold text-richblack-5">
+          <div className="min-w-0 space-y-1">
+            <p className="truncate text-base font-semibold text-richblack-5 sm:text-lg">
               {user?.firstName + " " + user?.lastName}
             </p>
-            <p className="text-sm text-richblack-300">{user?.email}</p>
+            <p className="truncate text-sm text-richblack-300">{user?.email}</p>
           </div>
         </div>
         <IconBtn
@@ -33,18 +33,20 @@ export default function MyProfile() {
           onclick={() => {
             navigate("/dashboard/settings")
           }}
+          customClasses="self-start sm:self-center"
         >
           <RiEditBoxLine />
         </IconBtn>
       </div>
-      <div className="my-10 flex flex-col gap-y-10 rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-8 px-12">
-        <div className="flex w-full items-center justify-between">
+      <div className="my-8 flex flex-col gap-y-6 rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-4 sm:my-10 sm:gap-y-10 sm:p-8 sm:px-12">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-lg font-semibold text-richblack-5">About</p>
           <IconBtn
             text="Edit"
             onclick={() => {
               navigate("/dashboard/settings")
             }}
+            customClasses="self-start sm:self-center"
           >
             <RiEditBoxLine />
           </IconBtn>
@@ -54,13 +56,13 @@ export default function MyProfile() {
             user?.additionalDetails?.about
               ? "text-richblack-5"
               : "text-richblack-400"
-          } text-sm font-medium`}
+          } min-w-0 text-sm font-medium`}
         >
           {user?.additionalDetails?.about ?? "Write Something About Yourself"}
         </p>
       </div>
-      <div className="my-10 flex flex-col gap-y-10 rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-8 px-12">
-        <div className="flex w-full items-center justify-between">
+      <div className="my-8 flex flex-col gap-y-6 rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-4 sm:my-10 sm:gap-y-10 sm:p-8 sm:px-12">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-lg font-semibold text-richblack-5">
             Personal Details
           </p>
@@ -69,11 +71,12 @@ export default function MyProfile() {
             onclick={() => {
               navigate("/dashboard/settings")
             }}
+            customClasses="self-start sm:self-center"
           >
             <RiEditBoxLine />
           </IconBtn>
         </div>
-        <div className="flex max-w-[500px] justify-between">
+        <div className="flex min-w-0 flex-col gap-8 sm:max-w-[500px] sm:flex-row sm:justify-between">
           <div className="flex flex-col gap-y-5">
             <div>
               <p className="mb-2 text-sm text-richblack-600">First Name</p>
@@ -83,7 +86,7 @@ export default function MyProfile() {
             </div>
             <div>
               <p className="mb-2 text-sm text-richblack-600">Email</p>
-              <p className="text-sm font-medium text-richblack-5">
+              <p className="break-words text-sm font-medium text-richblack-5">
                 {user?.email}
               </p>
             </div>
