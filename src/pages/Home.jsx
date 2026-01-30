@@ -34,8 +34,10 @@ function Home() {
           </Link>
         )}
 
-        {/* Heading */}
-        <div className="text-center text-4xl font-semibold">
+        {/* Heading - add top spacing when logged in (no "Become an Instructor" button) */}
+        <div
+          className={`text-center text-4xl font-semibold ${token ? "mt-16" : ""}`}
+        >
           Empower Your Future with
           <HighlightText text={"Coding Skills"} />
         </div>
@@ -53,7 +55,10 @@ function Home() {
           <CTAButton active={true} linkto={"/signup"}>
             Learn More
           </CTAButton>
-          <CTAButton active={false} linkto={"/login"}>
+          <CTAButton
+            active={false}
+            linkto={token ? "/contact" : "/login"}
+          >
             Book a Demo
           </CTAButton>
         </div>
