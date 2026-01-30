@@ -1,9 +1,24 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from "react"
+import { Link, useLocation, useNavigate } from "react-router-dom"
+import { toast } from "react-hot-toast"
+import { useSelector } from "react-redux"
 
 const Button = ({ children, active, linkto }) => {
+  const { token } = useSelector((state) => state.auth)
+  const location = useLocation()
+  const navigate = useNavigate()
+  const isContactPage = location.pathname === "/contact"
+
+  const handleClick = (e) => {
+    if (!token && !isContactPage) {
+      e.preventDefault()
+      toast.error("Please log in or sign up first")
+      navigate("/login")
+    }
+  }
+
   return (
-    <Link to={linkto}>
+    <Link to={linkto} onClick={handleClick}>
       <div
         className={`text-center text-[13px] sm:text-[16px] px-6 py-3 rounded-md font-bold shadow-[2px_2px_0px_0px_rgba(255,255,255,0.18)] ${
           active ? "bg-yellow-50 text-black " : "bg-richblack-800"
@@ -12,7 +27,7 @@ const Button = ({ children, active, linkto }) => {
         {children}
       </div>
     </Link>
-  );
-};
+  )
+}
 
-export default Button;
+export default Button

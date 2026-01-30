@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react"
 import { BiInfoCircle } from "react-icons/bi"
 import { HiOutlineGlobeAlt } from "react-icons/hi"
+import { toast } from "react-hot-toast"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate, useParams } from "react-router-dom"
 
 import ConfirmationModal from "../components/Common/ConfirmationModal"
+import { addToCart } from "../slices/cartSlice"
 import Footer from "../components/Common/Footer"
 import CourseAccordionBar from "../components/core/Course/CourseAccordionBar"
 import CourseDetailsCard from "../components/core/Course/CourseDetailsCard"
@@ -94,14 +96,17 @@ function CourseDetails() {
       BuyCourse(token, [courseId], user, navigate, dispatch)
       return
     }
-    setConfirmationModal({
-      text1: "You are not logged in!",
-      text2: "Please login to Purchase Course.",
-      btn1Text: "Login",
-      btn2Text: "Cancel",
-      btn1Handler: () => navigate("/login"),
-      btn2Handler: () => setConfirmationModal(null),
-    })
+    toast.error("Please log in or sign up first")
+    navigate("/login")
+  }
+
+  const handleAddToCart = () => {
+    if (token) {
+      dispatch(addToCart(response?.data?.courseDetails))
+      return
+    }
+    toast.error("Please log in or sign up first")
+    navigate("/login")
   }
 
   if (paymentLoading) {
@@ -162,7 +167,9 @@ function CourseDetails() {
               <button className="yellowButton" onClick={handleBuyCourse}>
                 Buy Now
               </button>
-              <button className="blackButton">Add to Cart</button>
+              <button className="blackButton" onClick={handleAddToCart}>
+                Add to Cart
+              </button>
             </div>
           </div>
           {/* Courses Card */}
