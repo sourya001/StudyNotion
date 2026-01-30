@@ -2,7 +2,7 @@ import { useState } from "react"
 import { toast } from "react-hot-toast"
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"
 import { useDispatch } from "react-redux"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useSearchParams } from "react-router-dom"
 
 import { sendOtp } from "../../../services/operations/authAPI"
 import { setSignupData } from "../../../slices/authSlice"
@@ -12,9 +12,13 @@ import Tab from "../../Common/Tab"
 function SignupForm() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const [searchParams] = useSearchParams()
+  const isInstructorSignup = searchParams.get("type") === "instructor"
 
-  // student or instructor
-  const [accountType, setAccountType] = useState(ACCOUNT_TYPE.STUDENT)
+  // student or instructor (default to instructor when coming from "Become an Instructor")
+  const [accountType, setAccountType] = useState(
+    isInstructorSignup ? ACCOUNT_TYPE.INSTRUCTOR : ACCOUNT_TYPE.STUDENT
+  )
 
   const[passAlert, setPassAlert] = useState("");
 

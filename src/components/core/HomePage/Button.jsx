@@ -10,7 +10,9 @@ const Button = ({ children, active, linkto }) => {
   const isContactPage = location.pathname === "/contact"
 
   const handleClick = (e) => {
-    if (!token && !isContactPage) {
+    // Allow signup links (including instructor signup) to work when not logged in
+    const isSignupLink = linkto?.startsWith("/signup")
+    if (!token && !isContactPage && !isSignupLink) {
       e.preventDefault()
       toast.error("Please log in or sign up first")
       navigate("/login")
