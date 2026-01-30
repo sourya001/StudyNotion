@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { AnimatePresence, motion } from "framer-motion"
 import { AiOutlineMenu, AiOutlineShoppingCart } from "react-icons/ai"
 import { BsChevronDown, BsXLg } from "react-icons/bs"
 import { useSelector } from "react-redux"
@@ -162,8 +163,16 @@ function Navbar() {
       </div>
 
       {/* Mobile menu panel */}
-      {mobileMenuOpen && (
-        <div className="absolute left-0 right-0 top-14 z-[1000] border-b border-richblack-700 bg-richblack-800 px-4 py-4 md:hidden">
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            key="mobile-menu"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+            className="absolute left-0 right-0 top-14 z-[1000] border-b border-richblack-700 bg-richblack-800 px-4 py-4 md:hidden"
+          >
           <div className="flex flex-col gap-4">
             {NavbarLinks.map((link) =>
               link.title === "Catalog" ? (
@@ -251,8 +260,9 @@ function Navbar() {
               )}
             </div>
           </div>
-        </div>
-      )}
+        </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }

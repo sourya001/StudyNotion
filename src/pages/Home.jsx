@@ -1,5 +1,6 @@
 // Icons Import
 import { FaArrowRight } from "react-icons/fa"
+import { motion } from "framer-motion"
 import { Link } from "react-router-dom"
 import { useSelector } from "react-redux"
 
@@ -21,7 +22,12 @@ function Home() {
   return (
     <div>
       {/* Section 1 */}
-      <div className="relative mx-auto flex w-11/12 max-w-maxContent flex-col items-center justify-between gap-8 text-white">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="relative mx-auto flex w-11/12 max-w-maxContent flex-col items-center justify-between gap-8 text-white"
+      >
         {/* Become a Instructor Button - only when not logged in */}
         {!token && (
           <Link to="/signup?type=instructor">
@@ -136,7 +142,7 @@ function Home() {
 
         {/* Explore Section */}
         <ExploreMore />
-      </div>
+      </motion.div>
 
       {/* Section 2 */}
       <div className="bg-pure-greys-5 text-richblack-700">
