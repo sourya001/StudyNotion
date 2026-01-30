@@ -6,13 +6,11 @@ import { useNavigate, useParams } from "react-router-dom"
 
 import ConfirmationModal from "../components/Common/ConfirmationModal"
 import Footer from "../components/Common/Footer"
-import RatingStars from "../components/Common/RatingStars"
 import CourseAccordionBar from "../components/core/Course/CourseAccordionBar"
 import CourseDetailsCard from "../components/core/Course/CourseDetailsCard"
 import { formatDate } from "../services/formatDate"
 import { fetchCourseDetails } from "../services/operations/courseDetailsAPI"
 import { BuyCourse } from "../services/operations/studentFeaturesAPI"
-import GetAvgRating from "../utils/avgRating"
 import Error from "./Error"
 
 function CourseDetails() {
@@ -44,14 +42,6 @@ function CourseDetails() {
   }, [courseId])
 
   // console.log("response: ", response)
-
-  // Calculating Avg Review count
-  const [avgReviewCount, setAvgReviewCount] = useState(0)
-  useEffect(() => {
-    const count = GetAvgRating(response?.data?.courseDetails.ratingAndReviews)
-    setAvgReviewCount(count)
-  }, [response])
-  // console.log("avgReviewCount: ", avgReviewCount)
 
   // // Collapse all
   // const [collapse, setCollapse] = useState("")
@@ -94,7 +84,6 @@ function CourseDetails() {
     price,
     whatYouWillLearn,
     courseContent,
-    ratingAndReviews,
     instructor,
     studentsEnroled,
     createdAt,
@@ -148,9 +137,6 @@ function CourseDetails() {
               </div>
               <p className={`text-richblack-200`}>{courseDescription}</p>
               <div className="text-md flex flex-wrap items-center gap-2">
-                <span className="text-yellow-25">{avgReviewCount}</span>
-                <RatingStars Review_Count={avgReviewCount} Star_Size={24} />
-                <span>{`(${ratingAndReviews.length} reviews)`}</span>
                 <span>{`${studentsEnroled.length} students enrolled`}</span>
               </div>
               <div>
