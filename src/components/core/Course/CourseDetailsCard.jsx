@@ -42,14 +42,8 @@ function CourseDetailsCard({ course, setConfirmationModal, handleBuyCourse }) {
       dispatch(addToCart(course))
       return
     }
-    setConfirmationModal({
-      text1: "You are not logged in!",
-      text2: "Please login to add To Cart",
-      btn1Text: "Login",
-      btn2Text: "Cancel",
-      btn1Handler: () => navigate("/login"),
-      btn2Handler: () => setConfirmationModal(null),
-    })
+    toast.error("Please log in or sign up first")
+    navigate("/login")
   }
 
   // console.log("Student already enrolled ", course?.studentsEnroled, user?._id)

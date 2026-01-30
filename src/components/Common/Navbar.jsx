@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { AiOutlineMenu, AiOutlineShoppingCart } from "react-icons/ai"
-import { BsChevronDown } from "react-icons/bs"
+import { BsChevronDown, BsXLg } from "react-icons/bs"
 import { useSelector } from "react-redux"
 import { Link, matchPath, useLocation } from "react-router-dom"
 
@@ -38,6 +38,7 @@ function Navbar() {
 
   const [subLinks, setSubLinks] = useState([])
   const [loading, setLoading] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   useEffect(() => {
     ;(async () => {
@@ -60,8 +61,8 @@ function Navbar() {
 
   return (
     <div
-      className={`flex h-14 items-center justify-center border-b-[1px] border-b-richblack-700 ${
-        location.pathname !== "/" ? "bg-richblack-800" : ""
+      className={`sticky top-0 z-50 relative flex h-14 items-center justify-center border-b-[1px] border-b-richblack-700 ${
+        location.pathname !== "/" ? "bg-richblack-800" : "bg-richblack-900"
       } transition-all duration-200`}
     >
       <div className="flex w-11/12 max-w-maxContent items-center justify-between">
@@ -159,10 +160,112 @@ function Navbar() {
           )}
           {token !== null && <ProfileDropdown />}
         </div>
-        <button className="mr-4 md:hidden">
-          <AiOutlineMenu fontSize={24} fill="#AFB2BF" />
+        <button
+          type="button"
+          className="mr-4 md:hidden"
+          onClick={() => setMobileMenuOpen((prev) => !prev)}
+          aria-label="Toggle menu"
+        >
+          {mobileMenuOpen ? (
+            <BsXLg fontSize={24} className="text-richblack-100" />
+          ) : (
+            <AiOutlineMenu fontSize={24} fill="#AFB2BF" />
+          )}
         </button>
       </div>
+
+      {/* Mobile menu panel */}
+      {mobileMenuOpen && (
+        <div className="absolute left-0 right-0 top-14 z-[1000] border-b border-richblack-700 bg-richblack-800 px-4 py-4 md:hidden">
+          <div className="flex flex-col gap-4">
+            {NavbarLinks.map((link) =>
+              link.title === "Catalog" ? (
+                <div key={link.title} className="flex flex-col gap-2">
+                  <p className="text-sm font-semibold text-richblack-300">
+                    {link.title}
+                  </p>
+                  {loading ? (
+                    <p className="text-richblack-400">Loading...</p>
+                  ) : subLinks?.length ? (
+                    <div className="flex flex-col gap-1 pl-2">
+                      {subLinks
+                        ?.filter((sub) => sub?.courses?.length > 0)
+                        ?.map((sub, i) => (
+                          <Link
+                            key={i}
+                            to={`/catalog/${sub.name
+                              .split(" ")
+                              .join("-")
+                              .toLowerCase()}`}
+                            className="py-2 text-richblack-5 hover:text-yellow-25"
+                            onClick={() => setMobileMenuOpen(false)}
+                          >
+                            {sub.name}
+                          </Link>
+                        ))}
+                    </div>
+                  ) : (
+                    <p className="text-richblack-400">No courses</p>
+                  )}
+                </div>
+              ) : (
+                <Link
+                  key={link.title}
+                  to={link?.path || "#"}
+                  className="text-richblack-5 hover:text-yellow-25"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {link.title}
+                </Link>
+              )
+            )}
+            <div className="mt-2 flex flex-col gap-2 border-t border-richblack-600 pt-4">
+              {user && user?.accountType !== ACCOUNT_TYPE.INSTRUCTOR && (
+                <Link
+                  to="/dashboard/cart"
+                  className="flex items-center gap-2 py-2 text-richblack-5 hover:text-yellow-25"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <AiOutlineShoppingCart className="text-xl" />
+                  Cart
+                  {totalItems > 0 && (
+                    <span className="rounded-full bg-richblack-600 px-2 py-0.5 text-xs text-yellow-100">
+                      {totalItems}
+                    </span>
+                  )}
+                </Link>
+              )}
+              {token === null && (
+                <>
+                  <Link
+                    to="/login"
+                    className="rounded-lg border border-richblack-600 bg-richblack-700 px-4 py-2 text-center text-richblack-5"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Log in
+                  </Link>
+                  <Link
+                    to="/signup"
+                    className="rounded-lg bg-yellow-50 px-4 py-2 text-center font-medium text-black"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Sign up
+                  </Link>
+                </>
+              )}
+              {token !== null && (
+                <Link
+                  to="/dashboard/my-profile"
+                  className="rounded-lg border border-richblack-600 bg-richblack-700 px-4 py-2 text-center text-richblack-5"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Dashboard
+                </Link>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
