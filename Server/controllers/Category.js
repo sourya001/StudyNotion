@@ -64,29 +64,29 @@ exports.categoryPageDetails = async (req, res) => {
         .status(404)
         .json({ success: false, message: "Category not found" })
     }
-    // Handle the case when there are no courses
-    if (selectedCategory.courses.length === 0) {
-      console.log("No courses found for the selected category.")
-      return res.status(404).json({
-        success: false,
-        message: "No courses found for the selected category.",
-      })
-    }
+    // Ensure courses array exists (may be empty if none Published)
+    if (!selectedCategory.courses) selectedCategory.courses = []
 
-    // Get courses for other categories
+    // Get courses for other categories (only if there are other categories)
+    let differentCategory = null
     const categoriesExceptSelected = await Category.find({
       _id: { $ne: categoryId },
     })
-    let differentCategory = await Category.findOne(
-      categoriesExceptSelected[getRandomInt(categoriesExceptSelected.length)]
-        ._id
-    )
-      .populate({
-        path: "courses",
-        match: { status: "Published" },
-      })
-      .exec()
-    console.log()
+    if (categoriesExceptSelected.length > 0) {
+      const randomIndex = getRandomInt(categoriesExceptSelected.length)
+      differentCategory = await Category.findById(
+        categoriesExceptSelected[randomIndex]._id
+      )
+        .populate({
+          path: "courses",
+          match: { status: "Published" },
+        })
+        .exec()
+      if (differentCategory && !differentCategory.courses) differentCategory.courses = []
+    }
+    if (!differentCategory) {
+      differentCategory = { name: "Other", courses: [], description: "" }
+    }
     // Get top-selling courses across all categories
     const allCategories = await Category.find()
       .populate({
@@ -94,9 +94,10 @@ exports.categoryPageDetails = async (req, res) => {
         match: { status: "Published" },
       })
       .exec()
-    const allCourses = allCategories.flatMap((category) => category.courses)
+    const allCourses = allCategories.flatMap((c) => c.courses || [])
     const mostSellingCourses = allCourses
-      .sort((a, b) => b.sold - a.sold)
+      .filter((c) => c != null)
+      .sort((a, b) => (b.sold || 0) - (a.sold || 0))
       .slice(0, 10)
 
     res.status(200).json({

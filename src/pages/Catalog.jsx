@@ -18,22 +18,31 @@ function Catalog() {
   const [active, setActive] = useState(1)
   const [catalogPageData, setCatalogPageData] = useState(null)
   const [categoryId, setCategoryId] = useState("")
+  const [categoryNotFound, setCategoryNotFound] = useState(false)
   // Fetch All Categories
   useEffect(() => {
     ;(async () => {
       try {
         const res = await apiConnector("GET", categories.CATEGORIES_API)
-        const category_id = res?.data?.data?.filter(
+        const list = res?.data?.data || []
+        const match = list.find(
           (ct) => ct.name.split(" ").join("-").toLowerCase() === catalogName
-        )[0]._id
-        setCategoryId(category_id)
+        )
+        if (match) {
+          setCategoryId(match._id)
+          setCategoryNotFound(false)
+        } else {
+          setCategoryNotFound(true)
+        }
       } catch (error) {
         console.log("Could not fetch Categories.", error)
+        setCategoryNotFound(true)
       }
     })()
   }, [catalogName])
   useEffect(() => {
     if (categoryId) {
+      setCatalogPageData(null)
       ;(async () => {
         try {
           const res = await getCatalogPageData(categoryId)
@@ -45,6 +54,9 @@ function Catalog() {
     }
   }, [categoryId])
 
+  if (categoryNotFound) {
+    return <Error />
+  }
   if (loading || !catalogPageData) {
     return (
       <div className="grid min-h-[calc(100vh-3.5rem)] place-items-center">
@@ -103,7 +115,7 @@ function Catalog() {
         </div>
         <div>
           <Course_Slider
-            Courses={catalogPageData?.data?.selectedCategory?.courses}
+            Courses={catalogPageData?.data?.selectedCategory?.courses || []}
           />
         </div>
       </div>
@@ -114,7 +126,7 @@ function Catalog() {
         </div>
         <div className="py-8">
           <Course_Slider
-            Courses={catalogPageData?.data?.differentCategory?.courses}
+            Courses={catalogPageData?.data?.differentCategory?.courses || []}
           />
         </div>
       </div>
@@ -124,8 +136,8 @@ function Catalog() {
         <div className="section_heading">Frequently Bought</div>
         <div className="py-8">
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-            {catalogPageData?.data?.mostSellingCourses
-              ?.slice(0, 4)
+            {(catalogPageData?.data?.mostSellingCourses || [])
+              .slice(0, 4)
               .map((course, i) => (
                 <Course_Card course={course} key={i} Height={"h-[400px]"} />
               ))}

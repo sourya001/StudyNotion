@@ -12,6 +12,15 @@ exports.createCourse = async (req, res) => {
     // Get user ID from request object
     const userId = req.user.id
 
+    // Get thumbnail image from request files (safe access - req.files can be undefined)
+    const thumbnail = req.files?.thumbnailImage
+    if (!thumbnail) {
+      return res.status(400).json({
+        success: false,
+        message: "Thumbnail image is required. Please upload a thumbnail.",
+      })
+    }
+
     // Get all required fields from request body
     let {
       courseName,
@@ -23,12 +32,18 @@ exports.createCourse = async (req, res) => {
       status,
       instructions: _instructions,
     } = req.body
-    // Get thumbnail image from request files
-    const thumbnail = req.files.thumbnailImage
 
-    // Convert the tag and instructions from stringified Array to Array
-    const tag = JSON.parse(_tag)
-    const instructions = JSON.parse(_instructions)
+    // Convert the tag and instructions from stringified Array to Array (safe parse)
+    let tag, instructions
+    try {
+      tag = typeof _tag === "string" ? JSON.parse(_tag) : Array.isArray(_tag) ? _tag : []
+      instructions = typeof _instructions === "string" ? JSON.parse(_instructions) : Array.isArray(_instructions) ? _instructions : []
+    } catch (parseErr) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid tag or instructions format. Send valid JSON arrays.",
+      })
+    }
 
     console.log("tag", tag)
     console.log("instructions", instructions)
@@ -40,7 +55,6 @@ exports.createCourse = async (req, res) => {
       !whatYouWillLearn ||
       !price ||
       !tag.length ||
-      !thumbnail ||
       !category ||
       !instructions.length
     ) {
@@ -73,10 +87,18 @@ exports.createCourse = async (req, res) => {
       })
     }
     // Upload the Thumbnail to Cloudinary
-    const thumbnailImage = await uploadImageToCloudinary(
-      thumbnail,
-      process.env.FOLDER_NAME
-    )
+    const folderName = process.env.FOLDER_NAME || "studynotion"
+    let thumbnailImage
+    try {
+      thumbnailImage = await uploadImageToCloudinary(thumbnail, folderName)
+    } catch (uploadErr) {
+      console.error("Cloudinary upload error:", uploadErr)
+      return res.status(500).json({
+        success: false,
+        message: "Thumbnail upload failed. Check Cloudinary config (CLOUD_NAME, API_KEY, API_SECRET) in .env",
+        error: uploadErr.message,
+      })
+    }
     console.log(thumbnailImage)
     // Create a new course with the given details
     const newCourse = await Course.create({
@@ -123,11 +145,11 @@ exports.createCourse = async (req, res) => {
     })
   } catch (error) {
     // Handle any errors that occur during the creation of the course
-    console.error(error)
+    console.error("createCourse error:", error)
     res.status(500).json({
       success: false,
       message: "Failed to create course",
-      error: error.message,
+      error: error.message || String(error),
     })
   }
 }
