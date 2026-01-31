@@ -191,8 +191,7 @@ exports.sendotp = async (req, res) => {
 
     // If user found with provided email
     if (checkUserPresent) {
-      // Return 401 Unauthorized status code with error message
-      return res.status(401).json({
+      return res.status(409).json({
         success: false,
         message: `User is Already Registered`,
       })
