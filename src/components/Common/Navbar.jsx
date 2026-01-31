@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react"
 import { AnimatePresence, motion } from "framer-motion"
-import { AiOutlineMenu, AiOutlineShoppingCart } from "react-icons/ai"
+import { AiOutlineHome, AiOutlineMenu, AiOutlineShoppingCart } from "react-icons/ai"
 import { BsChevronDown, BsChevronRight, BsXLg } from "react-icons/bs"
-import { useSelector } from "react-redux"
-import { Link, matchPath, useLocation } from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux"
+import { Link, matchPath, useLocation, useNavigate } from "react-router-dom"
+import { VscSignOut } from "react-icons/vsc"
 
 import logo from "../../assets/Logo/Logo-Full-Light.png"
 import { NavbarLinks } from "../../data/navbar-links"
+import { logout } from "../../services/operations/authAPI"
 import { apiConnector } from "../../services/apiConnector"
 import { categories } from "../../services/apis"
 import { ACCOUNT_TYPE } from "../../utils/constants"
@@ -14,6 +16,8 @@ import ProfileDropdown from "../core/Auth/ProfileDropdown"
 
 
 function Navbar() {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
   const { token } = useSelector((state) => state.auth)
   const { user } = useSelector((state) => state.profile)
   const { totalItems } = useSelector((state) => state.cart)
@@ -187,18 +191,31 @@ function Navbar() {
           )}
           {token !== null && <ProfileDropdown />}
         </div>
-        <button
-          type="button"
-          className="mr-4 md:hidden"
-          onClick={() => setMobileMenuOpen((prev) => !prev)}
-          aria-label="Toggle menu"
-        >
-          {mobileMenuOpen ? (
-            <BsXLg fontSize={24} className="text-richblack-100" />
-          ) : (
-            <AiOutlineMenu fontSize={24} fill="#AFB2BF" />
-          )}
-        </button>
+        {/* Mobile: Home icon + Hamburger */}
+        <div className="flex items-center gap-2 md:hidden">
+          <Link
+            to="/"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-richblack-100 transition-colors hover:bg-richblack-700 hover:text-yellow-25 focus-visible:ring-2 focus-visible:ring-yellow-25 focus-visible:ring-offset-2 focus-visible:ring-offset-richblack-800"
+            aria-label="Home"
+          >
+            <AiOutlineHome
+              fontSize={22}
+              className={matchRoute("/") ? "text-yellow-25" : ""}
+            />
+          </Link>
+          <button
+            type="button"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-richblack-100 transition-colors hover:bg-richblack-700 focus-visible:ring-2 focus-visible:ring-yellow-25 focus-visible:ring-offset-2 focus-visible:ring-offset-richblack-800"
+            onClick={() => setMobileMenuOpen((prev) => !prev)}
+            aria-label="Toggle menu"
+          >
+            {mobileMenuOpen ? (
+              <BsXLg fontSize={22} className="text-richblack-100" />
+            ) : (
+              <AiOutlineMenu fontSize={22} fill="#AFB2BF" />
+            )}
+          </button>
+        </div>
       </div>
 
       {/* Mobile menu panel */}
@@ -214,6 +231,7 @@ function Navbar() {
           >
           <div className="flex flex-col gap-4">
             {NavbarLinks.map((link) => {
+              if (link.title === "Home") return null
               if (link.title === "All Courses" && user?.accountType === ACCOUNT_TYPE.INSTRUCTOR) return null
               return link.title === "Catalog" ? (
                 <div key={link.title} className="flex flex-col gap-2">
@@ -326,13 +344,26 @@ function Navbar() {
                 </>
               )}
               {token !== null && (
-                <Link
-                  to="/dashboard/my-profile"
-                  className="rounded-lg border border-richblack-600 bg-richblack-700 px-4 py-2 text-center text-richblack-5"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Dashboard
-                </Link>
+                <>
+                  <Link
+                    to="/dashboard/my-profile"
+                    className="rounded-lg border border-richblack-600 bg-richblack-700 px-4 py-2 text-center text-richblack-5"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Dashboard
+                  </Link>
+                  <button
+                    type="button"
+                    className="flex w-full items-center justify-center gap-2 rounded-lg border border-richblack-600 bg-richblack-700 px-4 py-2 text-richblack-5 hover:bg-richblack-600 hover:text-richblack-25"
+                    onClick={() => {
+                      setMobileMenuOpen(false)
+                      dispatch(logout(navigate))
+                    }}
+                  >
+                    <VscSignOut className="text-lg" />
+                    Logout
+                  </button>
+                </>
               )}
             </div>
           </div>

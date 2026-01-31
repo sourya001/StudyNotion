@@ -13,7 +13,7 @@ const {
 
 export function getUserDetails(token, navigate) {
   return async (dispatch) => {
-    const toastId = toast.loading("Loading...")
+    const toastId = toast.loading("Loading...", { id: "get-user-details" })
     dispatch(setLoading(true))
     try {
       const response = await apiConnector("GET", GET_USER_DETAILS_API, null, {
@@ -31,7 +31,7 @@ export function getUserDetails(token, navigate) {
     } catch (error) {
       dispatch(logout(navigate))
       console.log("GET_USER_DETAILS API ERROR............", error)
-      toast.error("Could Not Get User Details")
+      toast.error("Could Not Get User Details", { id: "get-user-details-error" })
     }
     toast.dismiss(toastId)
     dispatch(setLoading(false))

@@ -14,6 +14,7 @@ import CodeBlocks from "../components/core/HomePage/CodeBlocks"
 import CourseCard from "../components/core/HomePage/CourseCard"
 import HighlightText from "../components/core/HomePage/HighlightText"
 import InstructorSection from "../components/core/HomePage/InstructorSection"
+import ChatSupportSection from "../components/core/HomePage/ChatSupportSection"
 import LearningLanguageSection from "../components/core/HomePage/LearningLanguageSection"
 import TimelineSection from "../components/core/HomePage/Timeline"
 
@@ -259,7 +260,12 @@ function Home() {
         </div>
       </div>
 
-      {/* Section 3 - Become an instructor section (only when not logged in) */}
+      {/* Section 3 - Personal chat support (visible to all) */}
+      <div className="relative mx-auto my-12 sm:my-16 lg:my-20 flex w-11/12 max-w-maxContent flex-col items-center justify-between gap-6 sm:gap-8 px-4 sm:px-6 py-10 sm:py-14 rounded-2xl bg-richblack-900 text-white border border-richblack-700/60 shadow-[0_4px_24px_rgba(0,0,0,0.25)]">
+        <ChatSupportSection />
+      </div>
+
+      {/* Section 4 - Become an instructor section (only when not logged in) */}
       {!token && (
         <div className="relative mx-auto my-12 sm:my-16 lg:my-20 flex w-11/12 max-w-maxContent flex-col items-center justify-between gap-6 sm:gap-8 px-2 bg-richblack-900 text-white">
           <InstructorSection />

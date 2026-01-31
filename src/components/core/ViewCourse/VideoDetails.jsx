@@ -169,78 +169,82 @@ const VideoDetails = () => {
   }
 
   return (
-    <div className="flex flex-col gap-5 text-white">
-      {!videoData ? (
-        <img
-          src={previewSource}
-          alt="Preview"
-          className="h-full w-full rounded-md object-cover"
-        />
-      ) : (
-        <Player
-          ref={playerRef}
-          aspectRatio="16:9"
-          playsInline
-          onEnded={() => setVideoEnded(true)}
-          src={videoData?.videoUrl}
-        >
-          <BigPlayButton position="center" />
-          {/* Render When Video Ends */}
-          {videoEnded && (
-            <div
-              style={{
-                backgroundImage:
-                  "linear-gradient(to top, rgb(0, 0, 0), rgba(0,0,0,0.7), rgba(0,0,0,0.5), rgba(0,0,0,0.1)",
-              }}
-              className="full absolute inset-0 z-[100] grid h-full place-content-center font-inter"
-            >
-              {!completedLectures.includes(subSectionId) && (
+    <div className="flex min-w-0 flex-col gap-4 text-white sm:gap-5">
+      <div className="min-w-0 overflow-hidden rounded-lg">
+        {!videoData ? (
+          <img
+            src={previewSource}
+            alt="Preview"
+            className="h-full w-full rounded-lg object-cover"
+          />
+        ) : (
+          <Player
+            ref={playerRef}
+            aspectRatio="16:9"
+            playsInline
+            onEnded={() => setVideoEnded(true)}
+            src={videoData?.videoUrl}
+          >
+            <BigPlayButton position="center" />
+            {videoEnded && (
+              <div
+                style={{
+                  backgroundImage:
+                    "linear-gradient(to top, rgb(0, 0, 0), rgba(0,0,0,0.7), rgba(0,0,0,0.5), rgba(0,0,0,0.1)",
+                }}
+                className="full absolute inset-0 z-[100] flex flex-col items-center justify-center gap-3 px-3 py-4 font-inter sm:gap-4 sm:py-6"
+              >
+                {!completedLectures.includes(subSectionId) && (
+                  <IconBtn
+                    disabled={loading}
+                    onclick={() => handleLectureCompletion()}
+                    text={!loading ? "Mark As Completed" : "Loading..."}
+                    customClasses="text-sm max-w-max px-3 py-2 sm:text-base sm:px-4 sm:py-2.5 md:text-xl"
+                  />
+                )}
                 <IconBtn
                   disabled={loading}
-                  onclick={() => handleLectureCompletion()}
-                  text={!loading ? "Mark As Completed" : "Loading..."}
-                  customClasses="text-xl max-w-max px-4 mx-auto"
+                  onclick={() => {
+                    if (playerRef?.current) {
+                      playerRef.current.seek(0)
+                      setVideoEnded(false)
+                    }
+                  }}
+                  text="Rewatch"
+                  customClasses="text-sm max-w-max px-3 py-2 sm:text-base sm:px-4 sm:py-2.5 md:text-xl"
                 />
-              )}
-              <IconBtn
-                disabled={loading}
-                onclick={() => {
-                  if (playerRef?.current) {
-                    // set the current time of the video to 0
-                    playerRef?.current?.seek(0)
-                    setVideoEnded(false)
-                  }
-                }}
-                text="Rewatch"
-                customClasses="text-xl max-w-max px-4 mx-auto mt-2"
-              />
-              <div className="mt-10 flex min-w-[250px] justify-center gap-x-4 text-xl">
-                {!isFirstVideo() && (
-                  <button
-                    disabled={loading}
-                    onClick={goToPrevVideo}
-                    className="blackButton"
-                  >
-                    Prev
-                  </button>
-                )}
-                {!isLastVideo() && (
-                  <button
-                    disabled={loading}
-                    onClick={goToNextVideo}
-                    className="blackButton"
-                  >
-                    Next
-                  </button>
-                )}
+                <div className="mt-2 flex min-w-0 flex-wrap justify-center gap-2 sm:mt-4 sm:gap-3 sm:text-lg md:text-xl">
+                  {!isFirstVideo() && (
+                    <button
+                      disabled={loading}
+                      onClick={goToPrevVideo}
+                      className="blackButton min-w-0 px-3 py-2 text-sm sm:px-4 sm:py-2.5 sm:text-base"
+                    >
+                      Prev
+                    </button>
+                  )}
+                  {!isLastVideo() && (
+                    <button
+                      disabled={loading}
+                      onClick={goToNextVideo}
+                      className="blackButton min-w-0 px-3 py-2 text-sm sm:px-4 sm:py-2.5 sm:text-base"
+                    >
+                      Next
+                    </button>
+                  )}
+                </div>
               </div>
-            </div>
-          )}
-        </Player>
-      )}
+            )}
+          </Player>
+        )}
+      </div>
 
-      <h1 className="mt-4 text-3xl font-semibold">{videoData?.title}</h1>
-      <p className="pt-2 pb-6">{videoData?.description}</p>
+      <h1 className="mt-2 min-w-0 break-words text-xl font-semibold sm:mt-4 sm:text-2xl md:text-3xl">
+        {videoData?.title}
+      </h1>
+      <p className="min-w-0 break-words pt-1 text-sm text-richblack-200 sm:pt-2 sm:text-base sm:pb-4 md:pb-6">
+        {videoData?.description}
+      </p>
     </div>
   )
 }

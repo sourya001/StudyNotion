@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 import "./App.css"
 // Redux
 import { useDispatch, useSelector } from "react-redux"
@@ -42,9 +42,12 @@ function App() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { user } = useSelector((state) => state.profile)
+  const userDetailsFetched = useRef(false)
 
   useEffect(() => {
+    if (userDetailsFetched.current) return
     if (localStorage.getItem("token")) {
+      userDetailsFetched.current = true
       const token = JSON.parse(localStorage.getItem("token"))
       dispatch(getUserDetails(token, navigate))
     }

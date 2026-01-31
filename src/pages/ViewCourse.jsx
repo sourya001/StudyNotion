@@ -1,4 +1,5 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
+import { HiMenuAlt2 } from "react-icons/hi"
 import { useDispatch, useSelector } from "react-redux"
 import { Outlet, useParams } from "react-router-dom"
 
@@ -15,6 +16,7 @@ export default function ViewCourse() {
   const { courseId } = useParams()
   const { token } = useSelector((state) => state.auth)
   const dispatch = useDispatch()
+  const [sidebarOpen, setSidebarOpen] = useState(false)
 
   useEffect(() => {
     ;(async () => {
@@ -35,9 +37,21 @@ export default function ViewCourse() {
   return (
     <>
       <div className="relative flex min-h-[calc(100vh-3.5rem)]">
-        <VideoDetailsSidebar />
-        <div className="h-[calc(100vh-3.5rem)] flex-1 overflow-auto">
-          <div className="mx-6">
+        <VideoDetailsSidebar
+          open={sidebarOpen}
+          onClose={() => setSidebarOpen(false)}
+        />
+        <div className="h-[calc(100vh-3.5rem)] min-w-0 flex-1 overflow-auto">
+          <button
+            type="button"
+            onClick={() => setSidebarOpen(true)}
+            className="fixed right-4 top-[4.5rem] z-40 flex items-center gap-2 rounded-md border border-richblack-700 bg-richblack-800 px-3 py-2 text-richblack-5 md:hidden"
+            aria-label="Open course menu"
+          >
+            <HiMenuAlt2 className="text-xl" />
+            <span>Chapters</span>
+          </button>
+          <div className="mx-3 px-0 pt-16 pb-4 sm:mx-4 sm:pt-5 sm:pb-5 md:mx-6 md:py-6">
             <Outlet />
           </div>
         </div>

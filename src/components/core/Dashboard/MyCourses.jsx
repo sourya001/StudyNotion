@@ -24,9 +24,11 @@ export default function MyCourses() {
   }, [])
 
   return (
-    <div>
-      <div className="mb-14 flex items-center justify-between">
-        <h1 className="text-3xl font-medium text-richblack-5">My Courses</h1>
+    <div className="min-w-0">
+      <div className="mb-8 flex min-w-0 flex-col gap-4 sm:mb-10 sm:flex-row sm:items-center sm:justify-between sm:gap-6 lg:mb-14">
+        <h1 className="text-2xl font-medium text-richblack-5 sm:text-3xl">
+          My Courses
+        </h1>
         <IconBtn
           text="Add Course"
           onclick={() => navigate("/dashboard/add-course")}

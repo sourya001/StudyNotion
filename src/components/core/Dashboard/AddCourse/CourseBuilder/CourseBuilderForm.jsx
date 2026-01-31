@@ -100,8 +100,10 @@ export default function CourseBuilderForm() {
   }
 
   return (
-    <div className="space-y-8 rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-6">
-      <p className="text-2xl font-semibold text-richblack-5">Course Builder</p>
+    <div className="space-y-6 rounded-lg border border-richblack-700 bg-richblack-800 p-4 sm:space-y-8 sm:p-6">
+      <p className="text-xl font-semibold text-richblack-5 sm:text-2xl">
+        Course Builder
+      </p>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div className="flex flex-col space-y-2">
           <label className="text-sm text-richblack-5" htmlFor="sectionName">
@@ -120,7 +122,7 @@ export default function CourseBuilderForm() {
             </span>
           )}
         </div>
-        <div className="flex items-end gap-x-4">
+        <div className="flex flex-wrap items-end gap-3 gap-y-2">
           <IconBtn
             type="submit"
             disabled={loading}
@@ -144,10 +146,11 @@ export default function CourseBuilderForm() {
         <NestedView handleChangeEditSectionName={handleChangeEditSectionName} />
       )}
       {/* Next Prev Button */}
-      <div className="flex justify-end gap-x-3">
+      <div className="flex flex-wrap justify-end gap-2 sm:gap-3">
         <button
+          type="button"
           onClick={goBack}
-          className={`flex cursor-pointer items-center gap-x-2 rounded-md bg-richblack-300 py-[8px] px-[20px] font-semibold text-richblack-900`}
+          className="flex cursor-pointer items-center gap-x-2 rounded-md bg-richblack-300 py-2 px-4 font-semibold text-richblack-900 sm:py-[8px] sm:px-[20px]"
         >
           Back
         </button>

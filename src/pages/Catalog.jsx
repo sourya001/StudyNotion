@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 import { useParams } from "react-router-dom"
+import { motion } from "framer-motion"
 
 // import CourseCard from "../components/Catalog/CourseCard"
 // import CourseSlider from "../components/Catalog/CourseSlider"
@@ -70,6 +71,11 @@ function Catalog() {
 
   return (
     <>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+      >
       {/* Hero Section */}
       <div className=" box-content bg-richblack-800 px-4">
         <div className="mx-auto flex min-h-[260px] max-w-maxContentTab flex-col justify-center gap-4 lg:max-w-maxContent ">
@@ -144,6 +150,7 @@ function Catalog() {
           </div>
         </div>
       </div>
+      </motion.div>
 
       <Footer />
     </>

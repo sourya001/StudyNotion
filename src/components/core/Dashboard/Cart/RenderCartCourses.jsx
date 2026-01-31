@@ -7,40 +7,40 @@ export default function RenderCartCourses() {
   const { cart } = useSelector((state) => state.cart)
   const dispatch = useDispatch()
   return (
-    <div className="flex flex-1 flex-col">
+    <div className="flex min-w-0 flex-1 flex-col">
       {cart.map((course, indx) => (
         <div
           key={course._id}
-          className={`flex w-full flex-wrap items-start justify-between gap-6 ${
-            indx !== cart.length - 1 && "border-b border-b-richblack-400 pb-6"
-          } ${indx !== 0 && "mt-6"} `}
+          className={`flex w-full min-w-0 flex-col gap-4 sm:gap-5 ${
+            indx !== cart.length - 1 ? "border-b border-b-richblack-400 pb-5 sm:pb-6" : ""
+          } ${indx !== 0 ? "mt-5 sm:mt-6" : ""}`}
         >
-          <div className="flex flex-1 flex-col gap-4 xl:flex-row">
+          <div className="flex min-w-0 flex-1 flex-col gap-3 sm:gap-4 xl:flex-row xl:items-start">
             <img
               src={course?.thumbnail}
               alt={course?.courseName}
-              className="h-[148px] w-[220px] rounded-lg object-cover"
+              className="h-32 w-full shrink-0 rounded-lg object-cover sm:h-36 sm:max-w-[200px] xl:h-[148px] xl:w-[220px]"
             />
-            <div className="flex flex-col space-y-1">
-              <p className="text-lg font-medium text-richblack-5">
+            <div className="flex min-w-0 flex-1 flex-col gap-1">
+              <p className="line-clamp-2 break-words text-base font-medium text-richblack-5 sm:text-lg">
                 {course?.courseName}
               </p>
-              <p className="text-sm text-richblack-300">
+              <p className="text-xs text-richblack-300 sm:text-sm">
                 {course?.category?.name}
               </p>
             </div>
           </div>
-          <div className="flex flex-col items-end space-y-2">
-            <button
-              onClick={() => dispatch(removeFromCart(course._id))}
-              className="flex items-center gap-x-1 rounded-md border border-richblack-600 bg-richblack-700 py-3 px-[12px] text-pink-200"
-            >
-              <RiDeleteBin6Line />
-              <span>Remove</span>
-            </button>
-            <p className="mb-6 text-3xl font-medium text-yellow-100">
+          <div className="flex flex-wrap items-center justify-between gap-3 sm:justify-end sm:gap-4">
+            <p className="order-2 text-xl font-medium text-yellow-100 sm:order-1 sm:mb-0 sm:text-2xl xl:text-3xl">
               ₹ {course?.price}
             </p>
+            <button
+              onClick={() => dispatch(removeFromCart(course._id))}
+              className="order-1 flex items-center gap-x-1.5 rounded-md border border-richblack-600 bg-richblack-700 px-3 py-2 text-sm text-pink-200 hover:bg-richblack-600 sm:order-2 sm:px-[12px] sm:py-3"
+            >
+              <RiDeleteBin6Line className="shrink-0 text-base sm:text-lg" />
+              <span>Remove</span>
+            </button>
           </div>
         </div>
       ))}

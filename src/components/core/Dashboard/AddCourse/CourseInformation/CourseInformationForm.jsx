@@ -158,7 +158,7 @@ export default function CourseInformationForm() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="space-y-8 rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-6"
+      className="space-y-6 rounded-lg border border-richblack-700 bg-richblack-800 p-4 sm:space-y-8 sm:p-6"
     >
       {/* Course Title */}
       <div className="flex flex-col space-y-2">
@@ -221,26 +221,38 @@ export default function CourseInformationForm() {
         )}
       </div>
       {/* Course Category */}
-      <div className="flex flex-col space-y-2">
+      <div className="flex min-w-0 flex-col space-y-2">
         <label className="text-sm text-richblack-5" htmlFor="courseCategory">
           Course Category <sup className="text-pink-200">*</sup>
         </label>
-        <select
-          {...register("courseCategory", { required: true })}
-          defaultValue=""
-          id="courseCategory"
-          className="form-style w-full"
-        >
-          <option value="" disabled>
-            Choose a Category
-          </option>
-          {!loading &&
-            courseCategories?.map((category, indx) => (
-              <option key={indx} value={category?._id}>
-                {category?.name}
-              </option>
-            ))}
-        </select>
+        <div className="relative min-w-0 max-w-full">
+          <select
+            {...register("courseCategory", { required: true })}
+            defaultValue=""
+            id="courseCategory"
+            className="form-style w-full min-w-0 max-w-full appearance-none bg-richblack-700 py-3 pl-3 pr-10 text-sm leading-tight text-richblack-5 sm:py-3 sm:text-base"
+            style={{ minHeight: "44px" }}
+          >
+            <option value="" disabled>
+              Choose a Category
+            </option>
+            {!loading &&
+              courseCategories?.map((category, indx) => (
+                <option key={indx} value={category?._id}>
+                  {category?.name}
+                </option>
+              ))}
+          </select>
+          {/* Dropdown arrow - hidden on small screens if native picker used, or keep for consistency */}
+          <span
+            className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-richblack-400"
+            aria-hidden="true"
+          >
+            <svg className="h-4 w-4 sm:h-5 sm:w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clipRule="evenodd" />
+            </svg>
+          </span>
+        </div>
         {errors.courseCategory && (
           <span className="ml-2 text-xs tracking-wide text-pink-200">
             Course Category is required
@@ -293,12 +305,13 @@ export default function CourseInformationForm() {
         getValues={getValues}
       />
       {/* Next Button */}
-      <div className="flex justify-end gap-x-2">
+      <div className="flex flex-wrap justify-end gap-2">
         {editCourse && (
           <button
+            type="button"
             onClick={() => dispatch(setStep(2))}
             disabled={loading}
-            className={`flex cursor-pointer items-center gap-x-2 rounded-md bg-richblack-300 py-[8px] px-[20px] font-semibold text-richblack-900`}
+            className="flex cursor-pointer items-center gap-x-2 rounded-md bg-richblack-300 py-2 px-4 font-semibold text-richblack-900 sm:py-[8px] sm:px-[20px]"
           >
             Continue Wihout Saving
           </button>

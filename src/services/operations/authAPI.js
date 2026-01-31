@@ -75,7 +75,15 @@ export function signUp(
       navigate("/login")
     } catch (error) {
       console.log("SIGNUP API ERROR............", error)
-      toast.error("Signup Failed")
+      const message =
+        error.response?.data?.message || error.message || ""
+      if (message.toLowerCase().includes("already exists")) {
+        toast.error("An account linked to the same email address already exists.")
+      } else if (message) {
+        toast.error(message)
+      } else {
+        toast.error("Signup Failed")
+      }
       navigate("/signup")
     }
     dispatch(setLoading(false))
