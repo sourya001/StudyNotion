@@ -1,0 +1,13 @@
+# Render Blueprint – backend deployment
+# Deploy: Connect repo → Render uses this file, or create Web Service manually with Root Directory: Server
+services:
+  - type: web
+    name: studynotion-api
+    runtime: node
+    rootDir: Server
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      # Add in Render Dashboard → Environment: MONGODB_URL, JWT_SECRET, FRONTEND_URL, STRIPE_SECRET_KEY, CLOUDINARY_URL, MAIL_USER, MAIL_PASS, GEMINI_API_KEY (see Server/.env.example)

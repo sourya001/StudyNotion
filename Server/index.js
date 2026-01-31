@@ -25,13 +25,16 @@ const PORT = process.env.PORT || 4000;
 // Connecting to database
 database.connect();
  
-// Middlewares – CORS first so preflight and all responses get headers
+// CORS: allow frontend (Vercel URL from env) and localhost for dev
+const allowedOrigins = process.env.FRONTEND_URL
+	? process.env.FRONTEND_URL.split(",").map((o) => o.trim()).filter(Boolean)
+	: [];
+if (!allowedOrigins.includes("http://localhost:3000")) {
+	allowedOrigins.push("http://localhost:3000");
+}
 app.use(
 	cors({
-		origin: [
-			"https://study-notion-597h.vercel.app",
-			"http://localhost:3000",
-		],
+		origin: allowedOrigins,
 		credentials: true,
 		methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
 		allowedHeaders: ["Content-Type", "Authorization", "Accept"],
@@ -69,11 +72,9 @@ app.get("/", (req, res) => {
 	});
 });
 
-// Listening to the server (only when not on Vercel)
-if (process.env.VERCEL !== "1") {
-	app.listen(PORT, () => {
-		console.log(`App is listening at ${PORT}`);
-	});
-}
+// Start server (Render runs Node directly; no serverless)
+app.listen(PORT, "0.0.0.0", () => {
+	console.log(`Server running on port ${PORT}`);
+});
 
 module.exports = app;
