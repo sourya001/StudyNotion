@@ -25,9 +25,7 @@ const PORT = process.env.PORT || 4000;
 // Connecting to database
 database.connect();
  
-// Middlewares
-app.use(express.json());
-app.use(cookieParser());
+// Middlewares – CORS first so preflight and all responses get headers
 app.use(
 	cors({
 		origin: [
@@ -35,8 +33,16 @@ app.use(
 			"http://localhost:3000",
 		],
 		credentials: true,
+		methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+		allowedHeaders: ["Content-Type", "Authorization", "Accept"],
 	})
 );
+app.use(express.json());
+app.use(cookieParser());
+// Explicit OPTIONS handler so preflight never gets a redirect
+app.options("*", (req, res) => {
+	res.sendStatus(204);
+});
 app.use(
 	fileUpload({
 		useTempFiles: true,

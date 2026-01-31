@@ -1,4 +1,4 @@
-const BASE_URL = process.env.REACT_APP_BASE_URL
+const BASE_URL = process.env.REACT_APP_BASE_URL?.replace(/\/$/, "") || ""
 const API_BASE = BASE_URL ? `${BASE_URL}/api/v1` : ""
 
 // AUTH ENDPOINTS
