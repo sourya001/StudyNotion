@@ -1,6 +1,10 @@
-// Polyfill fetch for Node < 18 (required by @google/generative-ai on Render)
+// Polyfill fetch + Headers for Node < 18 (required by @google/generative-ai on Render)
 if (typeof globalThis.fetch === "undefined") {
-  globalThis.fetch = require("node-fetch");
+  const { fetch, Headers, Request, Response } = require("undici");
+  globalThis.fetch = fetch;
+  globalThis.Headers = Headers;
+  globalThis.Request = Request;
+  globalThis.Response = Response;
 }
 
 // Importing necessary modules and packages
