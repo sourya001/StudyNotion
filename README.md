@@ -1,81 +1,150 @@
-# Getting Started with Create React App
+# StudyNotion
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A learning platform where users can browse courses, sign up, log in, and access course content. Built with React on the frontend and Node.js (Express) on the backend.
 
-## Available Scripts
+## Tech stack
 
-In the project directory, you can run:
+- **Frontend:** React, Redux Toolkit, React Router, Tailwind CSS
+- **Backend:** Node.js, Express, MongoDB (Mongoose), JWT auth
+- **Services:** Stripe (payments), Cloudinary (images), Nodemailer (email), Google Gemini (chat)
 
-### `npm start`
+## Prerequisites
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Before you clone and run the project, make sure you have:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- **Node.js** (v16 or higher; the repo includes an `.nvmrc` if you use nvm)
+- **MongoDB** – either [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) (free tier) or a local MongoDB instance
+- **Accounts / API keys** for:
+  - [Stripe](https://stripe.com) (test keys for payments)
+  - [Cloudinary](https://cloudinary.com) (image uploads)
+  - [Google AI (Gemini)](https://ai.google.dev) (optional; for the chatbot)
+  - Gmail or another SMTP provider (for signup, password reset, and payment emails)
 
-### `npm test`
+## Clone and setup
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+**1. Clone the repo**
 
-### `npm run build`
+```bash
+git clone https://github.com/YOUR_USERNAME/StudyNotion.git
+cd StudyNotion
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+**2. Backend environment**
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Create a `.env` file inside the `Server` folder and add your own values (do not commit real secrets). Example:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```env
+PORT=4000
+MONGODB_URL=mongodb+srv://YOUR_USER:YOUR_PASSWORD@YOUR_CLUSTER.mongodb.net/?retryWrites=true&w=majority
 
-### `npm run eject`
+JWT_SECRET=your-long-random-secret
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+CLOUDINARY_URL=cloudinary://API_KEY:API_SECRET@CLOUD_NAME
+# Or use separate vars:
+CLOUD_NAME=your_cloud_name
+API_KEY=your_api_key
+API_SECRET=your_api_secret
+FOLDER_NAME=studynotion
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+STRIPE_SECRET_KEY=sk_test_...
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+MAIL_HOST=smtp.gmail.com
+MAIL_USER=your-email@gmail.com
+MAIL_PASS=your-app-password
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+GEMINI_API_KEY=your-gemini-api-key
 
-## Learn More
+# Optional; used for redirects after payment
+FRONTEND_URL=http://localhost:3000
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- **MONGODB_URL:** From MongoDB Atlas: Database > Connect > “Connect your application”, or use a local URL like `mongodb://localhost:27017/studynotion`.
+- **JWT_SECRET:** Any long random string; used to sign auth tokens.
+- **Cloudinary:** Create a cloud, then use the URL from the dashboard or the three separate vars.
+- **Stripe:** Dashboard > Developers > API keys; use test keys while developing.
+- **Mail:** For Gmail, use an [App Password](https://support.google.com/accounts/answer/185833), not your normal password.
+- **GEMINI_API_KEY:** From [Google AI Studio](https://aistudio.google.com/app/apikey); omit if you are not using the chatbot.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+**3. Frontend environment**
 
-### Code Splitting
+Create a `.env` file in the **project root** (same level as `package.json`):
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```env
+REACT_APP_BASE_URL=http://localhost:4000
+REACT_APP_STRIPE_PUBLISHABLE_KEY=pk_test_...
+```
 
-### Analyzing the Bundle Size
+- **REACT_APP_BASE_URL:** Backend URL. Use `http://localhost:4000` for local dev, or your deployed API URL in production.
+- **REACT_APP_STRIPE_PUBLISHABLE_KEY:** Stripe publishable key (starts with `pk_test_` or `pk_live_`).
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+**4. Install dependencies and run**
 
-### Making a Progressive Web App
+Backend:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+```bash
+cd Server
+npm install
+npm run dev
+```
 
-### Advanced Configuration
+Leave this running. The API will be at http://localhost:4000.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+In a new terminal, from the project root:
 
-### Deployment
+```bash
+npm install
+npm start
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+The app will open at http://localhost:3000.
 
-### `npm run build` fails to minify
+To run both frontend and backend from the root in one go:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```bash
+npm run dev
+```
 
+## Project structure
 
-![Screenshot 2024-06-29 174335](https://github.com/sourya001/StudyNotion/assets/142716790/601e15a8-1305-479f-b9d3-6fbd99f0ea49)
-![Screenshot 2024-06-29 174346](https://github.com/sourya001/StudyNotion/assets/142716790/d1dc1715-6d8a-4c07-a4be-c15e3db431ac)
-![Screenshot 2024-06-29 174436](https://github.com/sourya001/StudyNotion/assets/142716790/a7399bc0-d796-4e92-8c6f-6131f173646e)
-![Screenshot 2024-06-29 174744](https://github.com/sourya001/StudyNotion/assets/142716790/8863c3a3-3528-489d-94fb-9bb8f8c29ddf)
+```
+StudyNotion/
+├── public/           # Static assets for the React app
+├── src/               # Frontend source
+│   ├── components/   # Reusable UI and page-specific components
+│   ├── pages/         # Route-level pages
+│   ├── services/      # API calls and helpers
+│   ├── slices/        # Redux state
+│   └── ...
+├── Server/            # Backend
+│   ├── api/           # Vercel serverless entry (api/index.js)
+│   ├── config/        # DB, Cloudinary, Stripe
+│   ├── controllers/   # Route handlers
+│   ├── models/        # Mongoose models
+│   ├── routes/        # Express routes
+│   ├── index.js       # Express app entry
+│   └── ...
+├── .env               # Frontend env (not committed)
+├── Server/.env        # Backend env (not committed)
+├── vercel.json        # SPA routing for frontend deployment
+└── package.json
+```
 
+## Scripts
 
+| Command | Description |
+|--------|-------------|
+| `npm start` | Run the frontend dev server (port 3000). |
+| `npm run build` | Build the frontend for production (output in `build/`). |
+| `npm run dev` | Run frontend and backend together from the root. |
+| `npm run server` | Run only the backend (must be run from inside `Server/` or via the root script). |
 
+## Build and deploy
 
+- **Frontend:** Run `npm run build`, then deploy the `build` folder to any static host (e.g. Vercel with root directory `.`, build command `npm run build`, output directory `build`). Set `REACT_APP_BASE_URL` and `REACT_APP_STRIPE_PUBLISHABLE_KEY` in the host’s environment.
+- **Backend:** Deploy the `Server` folder as a Node service (e.g. Vercel with root directory `Server`, or Render, Railway, etc.). Configure all Server env vars on the host. If you use Vercel, the repo already includes `Server/api/index.js` and the Express app is set up for serverless.
 
+## Troubleshooting
+
+- **“DB Connection Failed”** – Check `MONGODB_URL` in `Server/.env`, IP allowlist in MongoDB Atlas if applicable, and that the cluster is running.
+- **CORS errors in the browser** – Ensure the backend CORS config (in `Server/index.js`) includes your frontend origin (e.g. `http://localhost:3000` for local, or your production frontend URL). For Vercel backend, `Server/vercel.json` also sets CORS headers.
+- **Stripe or Cloudinary errors** – Confirm the keys in `Server/.env` and frontend `.env` match the same Stripe/Cloudinary account and environment (test vs live).
