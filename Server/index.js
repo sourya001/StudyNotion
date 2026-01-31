@@ -27,14 +27,21 @@ database.connect();
  
 // CORS: allow frontend (Vercel URL from env) and localhost for dev
 const allowedOrigins = process.env.FRONTEND_URL
-	? process.env.FRONTEND_URL.split(",").map((o) => o.trim()).filter(Boolean)
+	? process.env.FRONTEND_URL.split(",").map((o) => o.trim().replace(/\/$/, "")).filter(Boolean)
 	: [];
 if (!allowedOrigins.includes("http://localhost:3000")) {
 	allowedOrigins.push("http://localhost:3000");
 }
 app.use(
 	cors({
-		origin: allowedOrigins,
+		origin: (origin, cb) => {
+			if (!origin) return cb(null, true);
+			const normalized = origin.replace(/\/$/, "");
+			if (allowedOrigins.some((o) => o === normalized || o === origin)) {
+				return cb(null, true);
+			}
+			cb(null, false);
+		},
 		credentials: true,
 		methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
 		allowedHeaders: ["Content-Type", "Authorization", "Accept"],
@@ -42,10 +49,6 @@ app.use(
 );
 app.use(express.json());
 app.use(cookieParser());
-// Explicit OPTIONS handler so preflight never gets a redirect
-app.options("*", (req, res) => {
-	res.sendStatus(204);
-});
 app.use(
 	fileUpload({
 		useTempFiles: true,
