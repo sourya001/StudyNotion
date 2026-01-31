@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
+    "node-fetch": "^2.7.0",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^1.36.4",
@@ -29,6 +30,6 @@
     "stripe": "^14.25.0"
   },
   "engines": {
-    "node": ">=16.9"
+    "node": ">=18.0.0"
   }
 }

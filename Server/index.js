@@ -1,3 +1,8 @@
+// Polyfill fetch for Node < 18 (required by @google/generative-ai on Render)
+if (typeof globalThis.fetch === "undefined") {
+  globalThis.fetch = require("node-fetch");
+}
+
 // Importing necessary modules and packages
 const express = require("express");
 const app = express();

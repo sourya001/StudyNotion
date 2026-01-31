@@ -39,10 +39,15 @@ export function sendOtp(email, navigate) {
         error.response?.data?.message ||
         error.message ||
         "Could Not Send OTP"
-      toast.error(message === "User is Already Registered" ? "This email is already registered. Please log in." : message)
+      if (error.code === "ECONNABORTED" || error.message?.includes("timeout")) {
+        toast.error("Request timed out. The server may be waking up—please try again.")
+      } else {
+        toast.error(message === "User is Already Registered" ? "This email is already registered. Please log in." : message)
+      }
+    } finally {
+      dispatch(setLoading(false))
+      toast.dismiss(toastId)
     }
-    dispatch(setLoading(false))
-    toast.dismiss(toastId)
   }
 }
 
@@ -81,7 +86,9 @@ export function signUp(
       console.log("SIGNUP API ERROR............", error)
       const message =
         error.response?.data?.message || error.message || ""
-      if (message.toLowerCase().includes("already exists")) {
+      if (error.code === "ECONNABORTED" || error.message?.includes("timeout")) {
+        toast.error("Request timed out. The server may be waking up—please try again.")
+      } else if (message.toLowerCase().includes("already exists")) {
         toast.error("An account linked to the same email address already exists.")
       } else if (message) {
         toast.error(message)
@@ -89,9 +96,10 @@ export function signUp(
         toast.error("Signup Failed")
       }
       navigate("/signup")
+    } finally {
+      dispatch(setLoading(false))
+      toast.dismiss(toastId)
     }
-    dispatch(setLoading(false))
-    toast.dismiss(toastId)
   }
 }
 
@@ -123,10 +131,15 @@ export function login(email, password, navigate) {
       navigate("/dashboard/my-profile")
     } catch (error) {
       console.log("LOGIN API ERROR............", error)
-      toast.error("Login Failed")
+      if (error.code === "ECONNABORTED" || error.message?.includes("timeout")) {
+        toast.error("Request timed out. The server may be waking up—please try again.")
+      } else {
+        toast.error("Login Failed")
+      }
+    } finally {
+      dispatch(setLoading(false))
+      toast.dismiss(toastId)
     }
-    dispatch(setLoading(false))
-    toast.dismiss(toastId)
   }
 }
 
