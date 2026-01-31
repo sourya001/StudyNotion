@@ -12,7 +12,7 @@ const {
   DELETE_PROFILE_API,
 } = settingsEndpoints
 
-export function updateDisplayPicture(token, formData) {
+export function updateDisplayPicture(token, formData, navigate) {
   return async (dispatch) => {
     const toastId = toast.loading("Loading...")
     try {
@@ -25,16 +25,12 @@ export function updateDisplayPicture(token, formData) {
           Authorization: `Bearer ${token}`,
         }
       )
-      console.log(
-        "UPDATE_DISPLAY_PICTURE_API API RESPONSE............",
-        response
-      )
-
       if (!response.data.success) {
         throw new Error(response.data.message)
       }
       toast.success("Display Picture Updated Successfully")
       dispatch(setUser(response.data.data))
+      if (navigate) navigate("/dashboard/my-profile")
     } catch (error) {
       console.log("UPDATE_DISPLAY_PICTURE_API API ERROR............", error)
       toast.error("Could Not Update Display Picture")
@@ -43,15 +39,13 @@ export function updateDisplayPicture(token, formData) {
   }
 }
 
-export function updateProfile(token, formData) {
+export function updateProfile(token, formData, navigate) {
   return async (dispatch) => {
     const toastId = toast.loading("Loading...")
     try {
       const response = await apiConnector("PUT", UPDATE_PROFILE_API, formData, {
         Authorization: `Bearer ${token}`,
       })
-      console.log("UPDATE_PROFILE_API API RESPONSE............", response)
-
       if (!response.data.success) {
         throw new Error(response.data.message)
       }
@@ -62,6 +56,7 @@ export function updateProfile(token, formData) {
         setUser({ ...response.data.updatedUserDetails, image: userImage })
       )
       toast.success("Profile Updated Successfully")
+      if (navigate) navigate("/dashboard/my-profile")
     } catch (error) {
       console.log("UPDATE_PROFILE_API API ERROR............", error)
       toast.error("Could Not Update Profile")
