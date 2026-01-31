@@ -50,13 +50,15 @@ export default function Instructor() {
       {loading ? (
         <div className="spinner"></div>
       ) : courses.length > 0 ? (
-        <div>
-          <div className="my-4 flex h-[450px] space-x-4">
+        <div className="space-y-6">
+          <div className="my-4 flex min-h-[320px] flex-col gap-4 md:min-h-[380px] md:flex-row md:gap-6">
             {/* Render chart / graph */}
             {totalAmount > 0 || totalStudents > 0 ? (
-              <InstructorChart courses={instructorData} />
+              <div className="min-h-[280px] flex-1 md:min-h-[380px]">
+                <InstructorChart courses={instructorData} />
+              </div>
             ) : (
-              <div className="flex-1 rounded-md bg-richblack-800 p-6">
+              <div className="min-h-[280px] flex-1 rounded-md bg-richblack-800 p-6 md:min-h-[380px]">
                 <p className="text-lg font-bold text-richblack-5">Visualize</p>
                 <p className="mt-4 text-xl font-medium text-richblack-50">
                   Not Enough Data To Visualize
@@ -64,7 +66,7 @@ export default function Instructor() {
               </div>
             )}
             {/* Total Statistics */}
-            <div className="flex min-w-[250px] flex-col rounded-md bg-richblack-800 p-6">
+            <div className="flex w-full shrink-0 flex-col rounded-md bg-richblack-800 p-6 md:min-w-[250px] md:max-w-[280px]">
               <p className="text-lg font-bold text-richblack-5">Statistics</p>
               <div className="mt-4 space-y-4">
                 <div>
@@ -88,36 +90,34 @@ export default function Instructor() {
               </div>
             </div>
           </div>
-          <div className="rounded-md bg-richblack-800 p-6">
+          <div className="rounded-md bg-richblack-800 p-4 md:p-6">
             {/* Render 3 courses */}
-            <div className="flex items-center justify-between">
+            <div className="flex flex-wrap items-center justify-between gap-2">
               <p className="text-lg font-bold text-richblack-5">Your Courses</p>
               <Link to="/dashboard/my-courses">
-                <p className="text-xs font-semibold text-yellow-50">View All</p>
+                <p className="text-xs font-semibold text-yellow-50 hover:underline">
+                  View All
+                </p>
               </Link>
             </div>
-            <div className="my-4 flex items-start space-x-6">
+            <div className="my-4 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {courses.slice(0, 3).map((course) => (
-                <div key={course._id} className="w-1/3">
+                <div key={course._id} className="min-w-0">
                   <img
                     src={course.thumbnail}
                     alt={course.courseName}
-                    className="h-[201px] w-full rounded-md object-cover"
+                    className="h-[180px] w-full rounded-md object-cover sm:h-[201px]"
                   />
-                  <div className="mt-3 w-full">
-                    <p className="text-sm font-medium text-richblack-50">
+                  <div className="mt-3 min-w-0">
+                    <p className="truncate text-sm font-medium text-richblack-50">
                       {course.courseName}
                     </p>
-                    <div className="mt-1 flex items-center space-x-2">
-                      <p className="text-xs font-medium text-richblack-300">
-                        {course.studentsEnroled.length} students
+                    <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-0 text-richblack-300">
+                      <p className="text-xs font-medium">
+                        {course.studentsEnroled?.length ?? 0} students
                       </p>
-                      <p className="text-xs font-medium text-richblack-300">
-                        |
-                      </p>
-                      <p className="text-xs font-medium text-richblack-300">
-                        Rs. {course.price}
-                      </p>
+                      <p className="text-xs font-medium">|</p>
+                      <p className="text-xs font-medium">Rs. {course.price}</p>
                     </div>
                   </div>
                 </div>

@@ -31,7 +31,7 @@ function Dashboard() {
           <HiMenuAlt2 className="text-xl" />
           <span>Menu</span>
         </button>
-        <div className="mx-auto w-11/12 max-w-[1000px] py-10 pt-14 md:pt-10">
+        <div className="mx-auto w-11/12 max-w-[1200px] px-1 py-10 pt-20 md:pt-10">
           <Outlet />
         </div>
       </div>

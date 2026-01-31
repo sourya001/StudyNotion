@@ -41,19 +41,17 @@ export default function CoursesTable({ courses, setCourses }) {
 
   return (
     <>
-      <Table className="rounded-xl border border-richblack-800 ">
-        <Thead>
-          <Tr className="flex gap-x-10 rounded-t-md border-b border-b-richblack-800 px-6 py-2">
+      <div className="min-w-0 overflow-x-auto rounded-xl border border-richblack-800">
+        <Table className="w-full min-w-[640px] rounded-xl border-0">
+          <Thead>
+            <Tr className="flex gap-x-6 rounded-t-md border-b border-b-richblack-800 px-4 py-2 sm:gap-x-10 sm:px-6">
             <Th className="flex-1 text-left text-sm font-medium uppercase text-richblack-100">
               Courses
             </Th>
-            <Th className="text-left text-sm font-medium uppercase text-richblack-100">
-              Duration
-            </Th>
-            <Th className="text-left text-sm font-medium uppercase text-richblack-100">
+            <Th className="min-w-[80px] shrink-0 text-left text-sm font-medium uppercase text-richblack-100">
               Price
             </Th>
-            <Th className="text-left text-sm font-medium uppercase text-richblack-100">
+            <Th className="min-w-[100px] shrink-0 text-left text-sm font-medium uppercase text-richblack-100">
               Actions
             </Th>
           </Tr>
@@ -70,13 +68,13 @@ export default function CoursesTable({ courses, setCourses }) {
             courses?.map((course) => (
               <Tr
                 key={course._id}
-                className="flex gap-x-10 border-b border-richblack-800 px-6 py-8"
+                className="flex gap-x-6 border-b border-richblack-800 px-4 py-6 sm:gap-x-10 sm:px-6 sm:py-8"
               >
-                <Td className="flex flex-1 gap-x-4">
+                <Td className="flex min-w-0 flex-1 gap-x-3 sm:gap-x-4">
                   <img
                     src={course?.thumbnail}
                     alt={course?.courseName}
-                    className="h-[148px] w-[220px] rounded-lg object-cover"
+                    className="h-[100px] w-[140px] shrink-0 rounded-lg object-cover sm:h-[148px] sm:w-[220px]"
                   />
                   <div className="flex flex-col justify-between">
                     <p className="text-lg font-semibold text-richblack-5">
@@ -108,9 +106,6 @@ export default function CoursesTable({ courses, setCourses }) {
                       </p>
                     )}
                   </div>
-                </Td>
-                <Td className="text-sm font-medium text-richblack-100">
-                  2hr 30min
                 </Td>
                 <Td className="text-sm font-medium text-richblack-100">
                   ₹{course.price}
@@ -153,7 +148,8 @@ export default function CoursesTable({ courses, setCourses }) {
             ))
           )}
         </Tbody>
-      </Table>
+        </Table>
+      </div>
       {confirmationModal && <ConfirmationModal modalData={confirmationModal} />}
     </>
   )

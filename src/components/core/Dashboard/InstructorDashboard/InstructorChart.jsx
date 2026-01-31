@@ -48,33 +48,35 @@ export default function InstructorChart({ courses }) {
   }
 
   return (
-    <div className="flex flex-1 flex-col gap-y-4 rounded-md bg-richblack-800 p-6">
-      <p className="text-lg font-bold text-richblack-5">Visualize</p>
-      <div className="space-x-4 font-semibold">
-        {/* Button to switch to the "students" chart */}
-        <button
-          onClick={() => setCurrChart("students")}
-          className={`rounded-sm p-1 px-3 transition-all duration-200 ${
-            currChart === "students"
-              ? "bg-richblack-700 text-yellow-50"
-              : "text-yellow-400"
-          }`}
-        >
-          Students
-        </button>
-        {/* Button to switch to the "income" chart */}
-        <button
-          onClick={() => setCurrChart("income")}
-          className={`rounded-sm p-1 px-3 transition-all duration-200 ${
-            currChart === "income"
-              ? "bg-richblack-700 text-yellow-50"
-              : "text-yellow-400"
-          }`}
-        >
-          Income
-        </button>
+    <div className="flex flex-1 flex-col gap-y-5 rounded-md bg-richblack-800 p-6">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h3 className="text-lg font-bold text-richblack-5">Visualize</h3>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setCurrChart("students")}
+            className={`rounded-md px-4 py-2 text-sm font-semibold transition-all duration-200 ${
+              currChart === "students"
+                ? "bg-richblack-700 text-yellow-50"
+                : "text-richblack-300 hover:bg-richblack-700 hover:text-yellow-50"
+            }`}
+          >
+            Students
+          </button>
+          <button
+            type="button"
+            onClick={() => setCurrChart("income")}
+            className={`rounded-md px-4 py-2 text-sm font-semibold transition-all duration-200 ${
+              currChart === "income"
+                ? "bg-richblack-700 text-yellow-50"
+                : "text-richblack-300 hover:bg-richblack-700 hover:text-yellow-50"
+            }`}
+          >
+            Income
+          </button>
+        </div>
       </div>
-      <div className="relative mx-auto aspect-square h-full w-full">
+      <div className="relative mx-auto aspect-square h-2/3 w-2/3 min-h-[200px] min-w-[200px] max-h-[320px] max-w-[320px]">
         {/* Render the Pie chart based on the selected chart */}
         <Pie
           data={currChart === "students" ? chartDataStudents : chartIncomeData}
