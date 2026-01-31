@@ -7,6 +7,7 @@ import { Route, Routes, useNavigate } from "react-router-dom"
 
 // Components
 import Navbar from "./components/Common/Navbar"
+import Chatbot from "./components/Common/Chatbot"
 import OpenRoute from "./components/core/Auth/OpenRoute"
 import PrivateRoute from "./components/core/Auth/PrivateRoute"
 import AddCourse from "./components/core/Dashboard/AddCourse"
@@ -169,6 +170,7 @@ function App() {
         <Route path="*" element={<Error />} />
       </Routes>
       </main>
+      <Chatbot />
     </div>
   )
 }

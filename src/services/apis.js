@@ -64,6 +64,11 @@ export const contactusEndpoint = {
   CONTACT_US_API: API_BASE + "/reach/contact",
 }
 
+// CHATBOT API
+export const chatEndpoints = {
+  CHAT_API: API_BASE + "/chat",
+}
+
 // SETTINGS PAGE API
 export const settingsEndpoints = {
   UPDATE_DISPLAY_PICTURE_API: API_BASE + "/profile/updateDisplayPicture",
