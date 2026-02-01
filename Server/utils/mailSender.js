@@ -1,42 +1,46 @@
-const nodemailer = require("nodemailer")
+/**
+ * Send email via Resend API (works on Render; no SMTP needed).
+ * Keeps same signature as before: mailSender(email, title, body)
+ */
+
+const RESEND_API_URL = "https://api.resend.com/emails"
 
 const mailSender = async (email, title, body) => {
-  if (!process.env.MAIL_USER || !process.env.MAIL_PASS) {
-    console.error("MAIL_USER or MAIL_PASS is missing in .env")
+  const apiKey = process.env.RESEND_API_KEY
+  if (!apiKey) {
+    console.error("RESEND_API_KEY is missing in .env")
     return null
   }
 
+  const from = process.env.MAIL_FROM || "StudyNotion <onboarding@resend.dev>"
+
   try {
-    const isGmail = (process.env.MAIL_HOST || "").includes("gmail.com")
-    const transporterOptions = {
-      auth: {
-        user: process.env.MAIL_USER,
-        pass: process.env.MAIL_PASS,
+    const res = await fetch(RESEND_API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
       },
-    }
-    if (isGmail) {
-      transporterOptions.service = "gmail"
-    } else {
-      transporterOptions.host = process.env.MAIL_HOST
-      transporterOptions.port = 587
-      transporterOptions.secure = false
-      transporterOptions.requireTLS = true
-    }
-
-    const transporter = nodemailer.createTransport(transporterOptions)
-
-    const info = await transporter.sendMail({
-      from: `"StudyNotion" <${process.env.MAIL_USER}>`,
-      to: `${email}`,
-      subject: `${title}`,
-      html: `${body}`,
+      body: JSON.stringify({
+        from,
+        to: [email],
+        subject: title,
+        html: body,
+      }),
     })
-    console.log("Mail sent:", info.messageId, info.response)
-    return info
+
+    const data = await res.json().catch(() => ({}))
+
+    if (!res.ok) {
+      console.error("Resend API error:", data.message || res.statusText, data)
+      return data.message || res.statusText
+    }
+
+    console.log("Mail sent:", data.id)
+    return { messageId: data.id, response: data.id }
   } catch (error) {
-    console.error("Nodemailer error:", error.message)
+    console.error("Resend error:", error.message)
     if (error.code) console.error("Error code:", error.code)
-    if (error.response) console.error("SMTP response:", error.response)
     return error.message
   }
 }
