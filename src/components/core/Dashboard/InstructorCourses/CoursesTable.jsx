@@ -78,13 +78,14 @@ export default function CoursesTable({ courses, setCourses }) {
                         {course.courseName}
                       </p>
                       <p className="line-clamp-2 text-xs text-richblack-300 sm:line-clamp-3">
-                        {course.courseDescription.split(" ").length >
-                        TRUNCATE_LENGTH
-                          ? course.courseDescription
+                        {(course.courseDescription || "")
+                          .split(" ")
+                          .length > TRUNCATE_LENGTH
+                          ? (course.courseDescription || "")
                               .split(" ")
                               .slice(0, TRUNCATE_LENGTH)
                               .join(" ") + "..."
-                          : course.courseDescription}
+                          : course.courseDescription || ""}
                       </p>
                       <p className="text-[11px] text-richblack-400 sm:text-[12px] sm:text-white">
                         Created: {formatDate(course.createdAt)}
@@ -107,7 +108,7 @@ export default function CoursesTable({ courses, setCourses }) {
                   <Td className="flex min-w-[60px] shrink-0 items-center text-xs font-medium text-richblack-100 sm:min-w-[80px] sm:text-sm">
                     ₹{course.price}
                   </Td>
-                  <Td className="flex min-w-[72px] shrink-0 items-center gap-0.5 sm:min-w-[100px] sm:gap-1">
+                  <Td className="flex min-w-[72px] shrink-0 items-center gap-0.5 sm:min-w-[100px] sm:gap-1 [&_button]:text-richblack-100 [&_button]:disabled:opacity-50">
                     <button
                       type="button"
                       disabled={loading}

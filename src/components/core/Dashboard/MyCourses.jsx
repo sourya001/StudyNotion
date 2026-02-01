@@ -14,15 +14,14 @@ export default function MyCourses() {
   const [courses, setCourses] = useState([])
 
   useEffect(() => {
+    if (!token) return
     const fetchCourses = async () => {
       const result = await fetchInstructorCourses(token)
-      if (result) {
-        setCourses(result)
-      }
+      setCourses(Array.isArray(result) ? result : [])
     }
     fetchCourses()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [token])
 
   return (
     <motion.div

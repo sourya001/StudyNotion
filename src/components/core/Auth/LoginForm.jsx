@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom"
 
 import { login } from "../../../services/operations/authAPI"
 
-function LoginForm({ googleButton }) {
+function LoginForm() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [formData, setFormData] = useState({
@@ -77,15 +77,12 @@ function LoginForm({ googleButton }) {
           </p>
         </Link>
       </label>
-      <div className="mt-6 flex flex-wrap items-center gap-3">
-        <button
-          type="submit"
-          className="min-h-[44px] rounded-lg bg-yellow-50 px-5 py-3 font-semibold text-richblack-900 shadow-[0_2px_8px_rgba(254,215,0,0.25)] transition-all duration-200 hover:bg-yellow-100 hover:shadow-[0_4px_12px_rgba(254,215,0,0.35)] focus:outline-none focus:ring-2 focus:ring-yellow-50 focus:ring-offset-2 focus:ring-offset-richblack-900 active:scale-[0.98]"
-        >
-          Sign In
-        </button>
-        {googleButton}
-      </div>
+      <button
+        type="submit"
+        className="mt-6 min-h-[44px] rounded-lg bg-yellow-50 px-5 py-3 font-semibold text-richblack-900 shadow-[0_2px_8px_rgba(254,215,0,0.25)] transition-all duration-200 hover:bg-yellow-100 hover:shadow-[0_4px_12px_rgba(254,215,0,0.35)] focus:outline-none focus:ring-2 focus:ring-yellow-50 focus:ring-offset-2 focus:ring-offset-richblack-900 active:scale-[0.98]"
+      >
+        Sign In
+      </button>
     </form>
   )
 }
