@@ -1,3 +1,4 @@
+import { motion } from "framer-motion"
 import { RiEditBoxLine } from "react-icons/ri"
 import { useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
@@ -10,7 +11,11 @@ export default function MyProfile() {
   const navigate = useNavigate()
 
   return (
-    <>
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.35, ease: "easeOut" }}
+    >
       <h1 className="mb-8 text-2xl font-medium text-richblack-5 sm:mb-14 sm:text-3xl">
         My Profile
       </h1>
@@ -120,6 +125,6 @@ export default function MyProfile() {
           </div>
         </div>
       </div>
-    </>
+    </motion.div>
   )
 }
