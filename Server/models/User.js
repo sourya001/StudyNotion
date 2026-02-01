@@ -22,10 +22,16 @@ const userSchema = new mongoose.Schema(
       trim: true,
     },
 
-    // Define the password field with type String and required
+    // Define the password field (optional for Google OAuth users)
     password: {
       type: String,
-      required: true,
+      required: false,
+      default: null,
+    },
+    authProvider: {
+      type: String,
+      enum: ["local", "google"],
+      default: "local",
     },
     // Define the role field with type String and enum values of "Admin", "Student", or "Visitor"
     accountType: {

@@ -1,4 +1,5 @@
 const bcrypt = require("bcrypt")
+const { OAuth2Client } = require("google-auth-library")
 const User = require("../models/User")
 const OTP = require("../models/OTP")
 const jwt = require("jsonwebtoken")
@@ -7,6 +8,8 @@ const mailSender = require("../utils/mailSender")
 const { passwordUpdated } = require("../mail/templates/passwordUpdate")
 const Profile = require("../models/Profile")
 require("dotenv").config()
+
+const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID)
 
 // Signup Controller for Registering USers
 
@@ -140,10 +143,18 @@ exports.login = async (req, res) => {
       })
     }
 
+    // Google-only users have no password
+    if (!user.password) {
+      return res.status(401).json({
+        success: false,
+        message: "This account uses Google sign-in. Please use the Google button.",
+      })
+    }
+
     // Generate JWT token and Compare Password
     if (await bcrypt.compare(password, user.password)) {
       const token = jwt.sign(
-        { email: user.email, id: user._id, role: user.role },
+        { email: user.email, id: user._id, role: user.accountType },
         process.env.JWT_SECRET,
         {
           expiresIn: "24h",
@@ -286,6 +297,79 @@ exports.changePassword = async (req, res) => {
       success: false,
       message: "Error occurred while updating password",
       error: error.message,
+    })
+  }
+}
+
+// Google login/signup: verify ID token, find or create user, return JWT + user (same as login)
+exports.googleLogin = async (req, res) => {
+  try {
+    const { credential } = req.body
+    if (!credential) {
+      return res.status(400).json({
+        success: false,
+        message: "Google credential is required",
+      })
+    }
+
+    const ticket = await googleClient.verifyIdToken({
+      idToken: credential,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    })
+    const payload = ticket.getPayload()
+    const { email, given_name, family_name, picture } = payload
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        message: "Could not get email from Google",
+      })
+    }
+
+    let user = await User.findOne({ email }).populate("additionalDetails")
+
+    if (!user) {
+      const profileDetails = await Profile.create({
+        gender: null,
+        dateOfBirth: null,
+        about: null,
+        contactNumber: null,
+      })
+      user = await User.create({
+        firstName: given_name || "User",
+        lastName: family_name || "",
+        email,
+        password: null,
+        accountType: "Student",
+        approved: true,
+        additionalDetails: profileDetails._id,
+        image: picture || "",
+        authProvider: "google",
+      })
+      user = await User.findById(user._id).populate("additionalDetails")
+    }
+
+    const token = jwt.sign(
+      { email: user.email, id: user._id, role: user.accountType },
+      process.env.JWT_SECRET,
+      { expiresIn: "24h" }
+    )
+    user.token = token
+    user.password = undefined
+    const options = {
+      expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+      httpOnly: true,
+    }
+    res.cookie("token", token, options).status(200).json({
+      success: true,
+      token,
+      user,
+      message: "User Login Success",
+    })
+  } catch (error) {
+    console.error("Google login error:", error)
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Google sign-in failed",
     })
   }
 }
