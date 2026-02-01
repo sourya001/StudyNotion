@@ -33,7 +33,7 @@ exports.courseEnrollmentEmail = (courseName, name) => {
     <div class="card">
       <div class="brand-bar"></div>
       <div class="inner">
-        <a href="https://studynotion-edtech-project.vercel.app"><img class="logo" src="https://i.ibb.co/7Xyj3PC/logo.png" alt="StudyNotion"></a>
+        <a href="https://studynotion-edtech-project.vercel.app"><img class="logo" src="https://studynotion-edtech-project.vercel.app/logo512.png" alt="StudyNotion"></a>
         <h1>You’re in! Welcome to the course</h1>
         <p class="sub">Your enrollment is confirmed. Time to start learning.</p>
         <div class="copy">

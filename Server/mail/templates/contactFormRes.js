@@ -43,7 +43,7 @@ exports.contactUsEmail = (
     <div class="card">
       <div class="brand-bar"></div>
       <div class="inner">
-        <div class="center"><a href="https://studynotion-edtech-project.vercel.app"><img class="logo" src="https://i.ibb.co/7Xyj3PC/logo.png" alt="StudyNotion"></a></div>
+        <div class="center"><a href="https://studynotion-edtech-project.vercel.app"><img class="logo" src="https://studynotion-edtech-project.vercel.app/logo512.png" alt="StudyNotion"></a></div>
         <h1>We’ve received your message</h1>
         <p class="sub">Thanks for reaching out. Here’s what we have on file.</p>
         <div class="copy">
