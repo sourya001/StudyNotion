@@ -35,11 +35,99 @@ export default function CoursesTable({ courses, setCourses }) {
     setLoading(false)
   }
 
-  // console.log("All Course ", courses)
-
   return (
     <>
-      <div className="min-w-0 overflow-x-auto rounded-xl border border-richblack-800 -mx-1 px-1 sm:mx-0 sm:px-0">
+      <div className="flex flex-col gap-4 sm:hidden">
+        {courses?.length === 0 ? (
+          <div className="rounded-xl border border-richblack-800 bg-richblack-800/50 px-4 py-10 text-center text-base font-medium text-richblack-100">
+            No courses found
+          </div>
+        ) : (
+          courses?.map((course) => (
+            <div
+              key={course._id}
+              className="flex flex-col gap-3 rounded-xl border border-richblack-800 bg-richblack-800/50 p-3"
+            >
+              <div className="flex gap-3">
+                <img
+                  src={course?.thumbnail}
+                  alt={course?.courseName}
+                  className="h-20 w-28 shrink-0 rounded-lg object-cover"
+                />
+                <div className="min-w-0 flex-1">
+                  <p className="line-clamp-2 text-sm font-semibold text-richblack-5">
+                    {course.courseName}
+                  </p>
+                  <p className="mt-0.5 line-clamp-2 text-[11px] text-richblack-300">
+                    {(course.courseDescription || "")
+                      .split(" ")
+                      .slice(0, 15)
+                      .join(" ")}
+                    {(course.courseDescription || "").split(" ").length > 15
+                      ? "..."
+                      : ""}
+                  </p>
+                  <p className="mt-1 text-[10px] text-richblack-400">
+                    Created: {formatDate(course.createdAt)}
+                  </p>
+                  {course.status === COURSE_STATUS.DRAFT ? (
+                    <span className="mt-1 inline-flex items-center gap-1 rounded-full bg-richblack-700 px-2 py-0.5 text-[10px] font-medium text-pink-100">
+                      <HiClock size={10} /> Drafted
+                    </span>
+                  ) : (
+                    <span className="mt-1 inline-flex items-center gap-1 rounded-full bg-richblack-700 px-2 py-0.5 text-[10px] font-medium text-yellow-100">
+                      <FaCheck size={6} /> Published
+                    </span>
+                  )}
+                </div>
+              </div>
+              <div className="flex items-center justify-between border-t border-richblack-700 pt-3">
+                <span className="text-sm font-medium text-richblack-100">
+                  ₹{course.price}
+                </span>
+                <div className="flex gap-1 [&_button]:text-richblack-100 [&_button]:disabled:opacity-50">
+                  <button
+                    type="button"
+                    disabled={loading}
+                    onClick={() =>
+                      navigate(`/dashboard/edit-course/${course._id}`)
+                    }
+                    title="Edit"
+                    className="flex h-10 w-10 items-center justify-center rounded-lg bg-richblack-700 transition-colors hover:bg-richblack-600 hover:text-caribbeangreen-300 active:scale-95"
+                  >
+                    <FiEdit2 size={18} />
+                  </button>
+                  <button
+                    type="button"
+                    disabled={loading}
+                    onClick={() => {
+                      setConfirmationModal({
+                        text1: "Do you want to delete this course?",
+                        text2:
+                          "All the data related to this course will be deleted",
+                        btn1Text: !loading ? "Delete" : "Loading...  ",
+                        btn2Text: "Cancel",
+                        btn1Handler: !loading
+                          ? () => handleCourseDelete(course._id)
+                          : () => {},
+                        btn2Handler: !loading
+                          ? () => setConfirmationModal(null)
+                          : () => {},
+                      })
+                    }}
+                    title="Delete"
+                    className="flex h-10 w-10 items-center justify-center rounded-lg bg-richblack-700 transition-colors hover:bg-richblack-600 hover:text-[#ff0000] active:scale-95"
+                  >
+                    <RiDeleteBin6Line size={18} />
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+
+      <div className="hidden min-w-0 overflow-x-auto rounded-xl border border-richblack-800 sm:block sm:mx-0 sm:px-0">
         <Table className="w-full min-w-[320px] rounded-xl border-0 sm:min-w-[500px] lg:min-w-[640px]">
           <Thead>
             <Tr className="flex gap-x-4 rounded-t-xl border-b border-b-richblack-800 px-3 py-2 sm:gap-x-6 sm:px-4 md:gap-x-10 md:px-6">

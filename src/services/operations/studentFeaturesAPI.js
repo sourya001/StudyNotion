@@ -6,7 +6,6 @@ import { studentEndpoints } from "../apis"
 
 const { COURSE_PAYMENT_API, COURSE_VERIFY_API } = studentEndpoints
 
-// Buy the Course - creates Stripe Checkout Session and redirects to Stripe
 export async function BuyCourse(
   token,
   courses,
@@ -52,7 +51,6 @@ export async function BuyCourse(
   }
 }
 
-// Verify the Payment (called from PaymentSuccess page after Stripe redirect)
 export async function verifyPayment(sessionId, token, navigate, dispatch) {
   dispatch(setPaymentLoading(true))
   try {

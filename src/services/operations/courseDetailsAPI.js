@@ -54,7 +54,6 @@ export const fetchCourseDetails = async (courseId) => {
   return result
 }
 
-// fetching the available course categories
 export const fetchCourseCategories = async () => {
   let result = []
   try {
@@ -71,7 +70,6 @@ export const fetchCourseCategories = async () => {
   return result
 }
 
-// add the course details
 export const addCourseDetails = async (data, token) => {
   let result = null
   try {
@@ -90,7 +88,6 @@ export const addCourseDetails = async (data, token) => {
   return result
 }
 
-// edit the course details
 export const editCourseDetails = async (data, token) => {
   let result = null
   try {
@@ -109,7 +106,6 @@ export const editCourseDetails = async (data, token) => {
   return result
 }
 
-// create a section
 export const createSection = async (data, token) => {
   let result = null
   try {
@@ -128,7 +124,6 @@ export const createSection = async (data, token) => {
   return result
 }
 
-// create a subsection
 export const createSubSection = async (data, token) => {
   let result = null
   try {
@@ -147,7 +142,6 @@ export const createSubSection = async (data, token) => {
   return result
 }
 
-// update a section
 export const updateSection = async (data, token) => {
   let result = null
   try {
@@ -166,7 +160,6 @@ export const updateSection = async (data, token) => {
   return result
 }
 
-// update a subsection
 export const updateSubSection = async (data, token) => {
   let result = null
   try {
@@ -185,7 +178,6 @@ export const updateSubSection = async (data, token) => {
   return result
 }
 
-// delete a section
 export const deleteSection = async (data, token) => {
   let result = null
   try {
@@ -203,7 +195,7 @@ export const deleteSection = async (data, token) => {
   }
   return result
 }
-// delete a subsection
+
 export const deleteSubSection = async (data, token) => {
   let result = null
   try {
@@ -222,7 +214,6 @@ export const deleteSubSection = async (data, token) => {
   return result
 }
 
-// fetching all courses under a specific instructor
 export const fetchInstructorCourses = async (token) => {
   let result = []
   try {
@@ -245,7 +236,6 @@ export const fetchInstructorCourses = async (token) => {
   return result
 }
 
-// delete a course
 export const deleteCourse = async (data, token) => {
   try {
     const response = await apiConnector("DELETE", DELETE_COURSE_API, data, {
@@ -261,7 +251,6 @@ export const deleteCourse = async (data, token) => {
   }
 }
 
-// get full details of a course
 export const getFullDetailsOfCourse = async (courseId, token) => {
   let result = null
   try {
@@ -286,7 +275,6 @@ export const getFullDetailsOfCourse = async (courseId, token) => {
   return result
 }
 
-// mark a lecture as complete
 export const markLectureAsComplete = async (data, token) => {
   let result = null
   try {
@@ -306,7 +294,6 @@ export const markLectureAsComplete = async (data, token) => {
   return result
 }
 
-// create a rating for course
 export const createRating = async (data, token) => {
   let success = false
   try {

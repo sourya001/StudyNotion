@@ -15,7 +15,6 @@ function SignupForm() {
   const [searchParams] = useSearchParams()
   const isInstructorSignup = searchParams.get("type") === "instructor"
 
-  // student or instructor (default to instructor when coming from "Become an Instructor")
   const [accountType, setAccountType] = useState(
     isInstructorSignup ? ACCOUNT_TYPE.INSTRUCTOR : ACCOUNT_TYPE.STUDENT
   )
@@ -35,21 +34,15 @@ function SignupForm() {
 
   const { firstName, lastName, email, password, confirmPassword } = formData
 
-  // Handle input fields, when some value changes
   const handleOnChange = (e) => {
     setFormData((prevData) => ({
       ...prevData,
       [e.target.name]: e.target.value,
     }));
-    // if(e.target.name === "password" && e.target.value.length<8) {
-    //   setPassAlert("Must be 8");
-    // }
   }
 
-  // Handle Form Submission
   const handleOnSubmit = (e) => {
     e.preventDefault()
-    //const password = {password};
     if(password.length < 8){
       setPassAlert('Password must be of at least eight characters')
       return
@@ -64,13 +57,9 @@ function SignupForm() {
       accountType,
     }
 
-    // Setting signup data to state
-    // To be used after otp verification
     dispatch(setSignupData(signupData))
-    // Send OTP to user for verification
     dispatch(sendOtp(formData.email, navigate))
 
-    // Reset
     setFormData({
       firstName: "",
       lastName: "",
@@ -81,7 +70,6 @@ function SignupForm() {
     setAccountType(ACCOUNT_TYPE.STUDENT)
   }
 
-  // data to pass to Tab component
   const tabData = [
     {
       id: 1,
@@ -97,9 +85,7 @@ function SignupForm() {
 
   return (
     <div>
-      {/* Tab */}
       <Tab tabData={tabData} field={accountType} setField={setAccountType} />
-      {/* Form */}
       <form onSubmit={handleOnSubmit} className="flex w-full flex-col gap-y-4">
         <div className="flex gap-x-4">
           <label>
@@ -203,6 +189,15 @@ function SignupForm() {
         >
           Create Account
         </button>
+        <div className="mt-6 rounded-lg border border-richblack-700 bg-richblack-800/50 px-4 py-3 text-center">
+          <p className="text-sm text-richblack-200">
+            Did not receive OTP / Unable to sign in? No problem, we are here.
+          </p>
+          <p className="mt-2 text-xs text-richblack-400">
+            Demo ID: demo@gmail.com
+          </p>
+          <p className="text-xs text-richblack-400">Password: 12345678</p>
+        </div>
       </form>
     </div>
   )

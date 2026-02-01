@@ -10,9 +10,7 @@ const Button = ({ children, active, linkto }) => {
   const isContactPage = location.pathname === "/contact"
 
   const handleClick = (e) => {
-    // On contact page, allow the link/button to work normally
     if (isContactPage) return
-    // When logged out, show toast and take them to the designated page (login/signup)
     if (!token) {
       e.preventDefault()
       toast.error("Please log in or sign up first")

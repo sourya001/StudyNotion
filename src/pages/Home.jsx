@@ -1,13 +1,10 @@
-// Icons Import
 import { FaArrowRight } from "react-icons/fa"
 import { motion } from "framer-motion"
 import { Link } from "react-router-dom"
 import { useSelector } from "react-redux"
 
 import { ACCOUNT_TYPE } from "../utils/constants"
-// Image and Video Import
 import Banner from "../assets/Images/banner.mp4"
-// Component Imports
 import Footer from "../components/Common/Footer"
 import CTAButton from "../components/core/HomePage/Button"
 import CodeBlocks from "../components/core/HomePage/CodeBlocks"
@@ -18,7 +15,6 @@ import ChatSupportSection from "../components/core/HomePage/ChatSupportSection"
 import LearningLanguageSection from "../components/core/HomePage/LearningLanguageSection"
 import TimelineSection from "../components/core/HomePage/Timeline"
 
-// Three featured course widgets (hard-coded)
 const FEATURED_COURSES = [
   {
     heading: "Learn HTML",
@@ -70,14 +66,12 @@ function Home() {
 
   return (
     <div>
-      {/* Section 1 */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
         className="relative mx-auto flex w-11/12 max-w-maxContent flex-col items-center justify-between gap-4 sm:gap-6 lg:gap-8 text-white px-1 sm:px-0"
       >
-        {/* Become a Instructor Button - only when not logged in */}
         {!token && (
           <Link to="/signup?type=instructor">
             <div className="group mx-auto mt-12 sm:mt-16 w-fit rounded-full bg-richblack-800 p-1 font-bold text-richblack-200 drop-shadow-[0_1.5px_rgba(255,255,255,0.25)] transition-all duration-200 hover:scale-95 hover:drop-shadow-none">
@@ -89,7 +83,6 @@ function Home() {
           </Link>
         )}
 
-        {/* Heading - add top spacing when logged in (no "Become an Instructor" button) */}
         <div
           className={`text-center text-2xl sm:text-3xl lg:text-4xl font-semibold px-2 ${token ? "mt-12 sm:mt-16" : ""}`}
         >
@@ -97,7 +90,6 @@ function Home() {
           <HighlightText text={"Coding Skills"} />
         </div>
 
-        {/* Sub Heading */}
         <div className="-mt-2 sm:-mt-3 w-full max-w-[90%] text-center text-sm sm:text-base lg:text-lg font-bold text-richblack-300 px-2">
           With our online coding courses, you can learn at your own pace, from
           anywhere in the world, and get access to a wealth of resources,
@@ -105,7 +97,6 @@ function Home() {
           instructors.
         </div>
 
-        {/* CTA Buttons */}
         <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-4 sm:gap-7 items-center">
           <CTAButton active={true} linkto={getLearnMoreLink()}>
             Learn More
@@ -118,7 +109,6 @@ function Home() {
           </CTAButton>
         </div>
 
-        {/* Video */}
         <div className="mx-2 sm:mx-3 my-5 sm:my-7 w-full max-w-full overflow-hidden rounded-lg shadow-[10px_-5px_50px_-5px] shadow-blue-200">
           <video
             className="w-full max-w-full h-auto shadow-[20px_20px_rgba(255,255,255)]"
@@ -130,7 +120,6 @@ function Home() {
           </video>
         </div>
 
-        {/* Code Section 1  */}
         <div>
           <CodeBlocks
             position={"lg:flex-row"}
@@ -160,7 +149,6 @@ function Home() {
           />
         </div>
 
-        {/* Code Section 2 */}
         <div>
           <CodeBlocks
             position={"lg:flex-row-reverse"}
@@ -189,7 +177,6 @@ function Home() {
           />
         </div>
 
-        {/* Featured courses - three hard-coded widgets */}
         <div>
           <div className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-center my-8 sm:my-10 px-2">
             Unlock the
@@ -214,10 +201,8 @@ function Home() {
         </div>
       </motion.div>
 
-      {/* Section 2 */}
       <div className="bg-pure-greys-5 text-richblack-700 -mt-5 sm:-mt-8 lg:-mt-8">
         <div className="homepage_bg h-[220px] sm:h-[280px] lg:h-[240px]">
-          {/* Explore Full Catagory Section */}
           <div className="mx-auto flex w-11/12 max-w-maxContent flex-col items-center justify-center gap-6 sm:gap-8 px-2 h-full min-h-0">
             <div className="hidden lg:block lg:h-[48px] flex-shrink-0"></div>
             <div className="flex flex-col sm:flex-row gap-4 sm:gap-7 text-white lg:mt-2 items-center">
@@ -235,7 +220,6 @@ function Home() {
         </div>
 
         <div className="mx-auto flex w-11/12 max-w-maxContent flex-col items-center justify-between gap-6 sm:gap-8 px-2">
-          {/* Job that is in Demand - Section 1 */}
           <div className="mb-8 sm:mb-10 mt-4 sm:mt-[-80px] lg:mt-8 flex flex-col gap-6 sm:gap-7 lg:flex-row lg:items-start lg:justify-between lg:gap-x-12 lg:gap-y-0">
             <div className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-center lg:text-left lg:min-w-0 lg:max-w-[45%] lg:flex-shrink-0">
               Get the skills you need for a{" "}
@@ -253,27 +237,22 @@ function Home() {
             </div>
           </div>
 
-          {/* Timeline Section - Section 2 */}
           <TimelineSection />
 
-          {/* Learning Language Section - Section 3 */}
           <LearningLanguageSection />
         </div>
       </div>
 
-      {/* Section 3 - Personal chat support (visible to all) */}
       <div className="relative mx-auto my-12 sm:my-16 lg:my-20 flex w-11/12 max-w-maxContent flex-col items-center justify-between gap-6 sm:gap-8 px-4 sm:px-6 py-10 sm:py-14 rounded-2xl bg-richblack-900 text-white border border-richblack-700/60 shadow-[0_4px_24px_rgba(0,0,0,0.25)]">
         <ChatSupportSection />
       </div>
 
-      {/* Section 4 - Become an instructor section (only when not logged in) */}
       {!token && (
         <div className="relative mx-auto my-12 sm:my-16 lg:my-20 flex w-11/12 max-w-maxContent flex-col items-center justify-between gap-6 sm:gap-8 px-2 bg-richblack-900 text-white">
           <InstructorSection />
         </div>
       )}
 
-      {/* Footer */}
       <Footer />
     </div>
   )

@@ -20,7 +20,6 @@ export default function Sidebar({ open = false, onClose }) {
 
   useEffect(() => {
     onClose?.()
-    // Only close when route changes; do not depend on onClose to avoid closing right after open
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname])
 
@@ -80,7 +79,6 @@ export default function Sidebar({ open = false, onClose }) {
 
   return (
     <>
-      {/* Mobile: overlay sidebar */}
       <div
         role="presentation"
         className={`fixed inset-0 top-[3.5rem] z-50 bg-black/50 transition-opacity md:hidden ${

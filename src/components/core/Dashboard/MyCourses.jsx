@@ -25,18 +25,19 @@ export default function MyCourses() {
 
   return (
     <motion.div
-      className="min-w-0"
+      className="min-w-0 px-2 sm:px-0"
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35, ease: "easeOut" }}
     >
-      <div className="mb-8 flex min-w-0 flex-col gap-4 sm:mb-10 sm:flex-row sm:items-center sm:justify-between sm:gap-6 lg:mb-14">
-        <h1 className="text-2xl font-medium text-richblack-5 sm:text-3xl">
+      <div className="mb-6 flex min-w-0 flex-col gap-3 sm:mb-10 sm:flex-row sm:items-center sm:justify-between sm:gap-6 lg:mb-14">
+        <h1 className="text-xl font-medium text-richblack-5 sm:text-3xl">
           My Courses
         </h1>
         <IconBtn
           text="Add Course"
           onclick={() => navigate("/dashboard/add-course")}
+          customClasses="w-full sm:w-auto justify-center sm:justify-center"
         >
           <VscAdd />
         </IconBtn>

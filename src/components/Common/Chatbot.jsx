@@ -33,7 +33,6 @@ function Chatbot() {
     scrollToBottom()
   }, [messages])
 
-  // Listen for "Try now" from Personal chat support section (logged-in user)
   useEffect(() => {
     const handleOpenChatbot = () => {
       if (token) setOpen(true)
@@ -42,7 +41,6 @@ function Chatbot() {
     return () => window.removeEventListener("openChatbot", handleOpenChatbot)
   }, [token])
 
-  // Close chatbot when user scrolls the page (not when scrolling inside the chat panel)
   useEffect(() => {
     if (!open) return
     const handleScroll = (e) => {

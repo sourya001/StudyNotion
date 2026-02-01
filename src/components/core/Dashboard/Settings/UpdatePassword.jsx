@@ -21,7 +21,6 @@ export default function UpdatePassword() {
   } = useForm()
 
   const submitPasswordForm = async (data) => {
-    // console.log("password Data - ", data)
     try {
       await changePassword(token, data)
     } catch (error) {
@@ -97,11 +96,15 @@ export default function UpdatePassword() {
           <button
             type="button"
             onClick={() => navigate("/dashboard/my-profile")}
-            className="cursor-pointer rounded-md bg-richblack-700 py-2 px-5 font-semibold text-richblack-50"
+            className="flex w-full items-center justify-center rounded-md bg-richblack-700 py-2 px-5 font-semibold text-richblack-50 sm:w-auto"
           >
             Cancel
           </button>
-          <IconBtn type="submit" text="Update" />
+          <IconBtn
+            type="submit"
+            text="Update"
+            customClasses="w-full sm:w-auto justify-center"
+          />
         </div>
       </form>
     </>

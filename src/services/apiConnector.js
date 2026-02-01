@@ -1,6 +1,5 @@
 import axios from "axios";
 
-// Timeout so we don't hang forever (e.g. when backend is cold-starting on Render)
 const API_TIMEOUT_MS = 45000;
 
 export const axiosInstance = axios.create({

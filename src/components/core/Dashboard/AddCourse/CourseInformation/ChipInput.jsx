@@ -1,12 +1,8 @@
-// Importing React hook for managing component state
 import { useEffect, useState } from "react"
-// Importing React icon component
 import { MdClose } from "react-icons/md"
 import { useSelector } from "react-redux"
 
-// Defining a functional component ChipInput
 export default function ChipInput({
-  // Props to be passed to the component
   label,
   name,
   placeholder,
@@ -17,7 +13,6 @@ export default function ChipInput({
 }) {
   const { editCourse, course } = useSelector((state) => state.course)
 
-  // Setting up state for managing chips array and current input
   const [chips, setChips] = useState([])
   const [tagInput, setTagInput] = useState("")
 
@@ -42,7 +37,6 @@ export default function ChipInput({
     }
   }
 
-  // Add tag on Enter or comma (use event.target.value so we have latest input)
   const handleKeyDown = (event) => {
     if (event.key === "Enter" || event.key === ",") {
       event.preventDefault()
@@ -54,20 +48,16 @@ export default function ChipInput({
     }
   }
 
-  // Function to handle deletion of a chip
   const handleDeleteChip = (chipIndex) => {
-    // Filter the chips array to remove the chip with the given index
     const newChips = chips.filter((_, index) => index !== chipIndex)
     setChips(newChips)
   }
 
-  // Render the component
   return (
     <div className="flex flex-col space-y-2">
       <label className="text-sm text-richblack-5" htmlFor={name}>
         {label} <sup className="text-pink-200">*</sup>
       </label>
-      {/* Input and Add button - same layout as RequirementsField */}
       <div className="flex flex-col items-start space-y-2">
         <input
           id={name}
@@ -87,7 +77,6 @@ export default function ChipInput({
           Add
         </button>
       </div>
-      {/* Render the chips */}
       {chips.length > 0 && (
         <div className="flex w-full flex-wrap gap-2">
           {chips.map((chip, index) => (
@@ -107,7 +96,6 @@ export default function ChipInput({
           ))}
         </div>
       )}
-      {/* Render an error message if the input is required and not filled */}
       {errors[name] && (
         <span className="ml-2 text-xs tracking-wide text-pink-200">
           {label} is required

@@ -83,6 +83,15 @@ function LoginForm() {
       >
         Sign In
       </button>
+      <div className="mt-6 rounded-lg border border-richblack-700 bg-richblack-800/50 px-4 py-3 text-center">
+        <p className="text-sm text-richblack-200">
+          Did not receive OTP / Unable to sign in? No problem, we are here.
+        </p>
+        <p className="mt-2 text-xs text-richblack-400">
+          Demo ID: demo@gmail.com
+        </p>
+        <p className="text-xs text-richblack-400">Password: 12345678</p>
+      </div>
     </form>
   )
 }

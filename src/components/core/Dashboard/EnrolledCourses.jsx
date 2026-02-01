@@ -14,15 +14,8 @@ export default function EnrolledCourses() {
   useEffect(() => {
     ;(async () => {
       try {
-        const res = await getUserEnrolledCourses(token) // Getting all the published and the drafted courses
-
-        // Filtering the published course out
+        const res = await getUserEnrolledCourses(token)
         const filterPublishCourse = res.filter((ele) => ele.status !== "Draft")
-        // console.log(
-        //   "Viewing all the couse that is Published",
-        //   filterPublishCourse
-        // )
-
         setEnrolledCourses(filterPublishCourse)
       } catch (error) {
         console.log("Could not fetch enrolled courses.")
@@ -41,11 +34,9 @@ export default function EnrolledCourses() {
       ) : !enrolledCourses.length ? (
         <p className="grid h-[10vh] w-full place-content-center text-richblack-5">
           You have not enrolled in any course yet.
-          {/* TODO: Modify this Empty State */}
         </p>
       ) : (
         <div className="my-8 text-richblack-5">
-          {/* Table layout - hidden on small screens */}
           <div className="my-8 hidden md:block">
             <div className="flex rounded-t-lg bg-richblack-500 ">
               <p className="w-[45%] px-5 py-3">Course Name</p>
@@ -94,7 +85,6 @@ export default function EnrolledCourses() {
             ))}
           </div>
 
-          {/* Card layout - small screens only */}
           <div className="flex flex-col gap-4 md:hidden">
             {enrolledCourses.map((course, i) => (
               <div

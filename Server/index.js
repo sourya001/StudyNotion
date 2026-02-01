@@ -1,4 +1,3 @@
-// Polyfill fetch + Headers for Node < 18 (required by @google/generative-ai on Render)
 if (typeof globalThis.fetch === "undefined") {
   const { fetch, Headers, Request, Response } = require("undici");
   globalThis.fetch = fetch;
@@ -7,7 +6,6 @@ if (typeof globalThis.fetch === "undefined") {
   globalThis.Response = Response;
 }
 
-// Importing necessary modules and packages
 const express = require("express");
 const app = express();
 const userRoutes = require("./routes/user");
@@ -23,18 +21,12 @@ const { cloudinaryConnect } = require("./config/cloudinary");
 const fileUpload = require("express-fileupload");
 const dotenv = require("dotenv");
 
-// Loading environment variables from .env file
 dotenv.config();
 
-// Setting up port number
 const PORT = process.env.PORT || 4000;
 
-
-
-// Connecting to database
 database.connect();
- 
-// CORS: allow frontend (Vercel URL from env) and localhost for dev
+
 const allowedOrigins = process.env.FRONTEND_URL
 	? process.env.FRONTEND_URL.split(",").map((o) => o.trim().replace(/\/$/, "")).filter(Boolean)
 	: [];
