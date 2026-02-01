@@ -64,6 +64,7 @@ function Home() {
 
   const getExploreFullCatalogLink = () => {
     if (!token) return "/signup"
+    if (user?.accountType === ACCOUNT_TYPE.INSTRUCTOR) return "/dashboard/my-courses"
     return "/all-courses"
   }
 

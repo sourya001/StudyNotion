@@ -14,9 +14,7 @@ export async function BuyCourse(
   navigate,
   dispatch
 ) {
-  const toastId = toast.loading("Redirecting to payment...")
   dispatch(setPaymentLoading(true))
-
   try {
     const frontendOrigin =
       window.location.origin || "http://localhost:3000"
@@ -42,7 +40,6 @@ export async function BuyCourse(
 
     const { url } = orderResponse.data
     if (url) {
-      toast.dismiss(toastId)
       window.location.href = url
       return
     }
@@ -51,16 +48,13 @@ export async function BuyCourse(
   } catch (error) {
     console.log("PAYMENT API ERROR............", error)
     toast.error(error.message || "Could not start payment.")
-    toast.dismiss(toastId)
     dispatch(setPaymentLoading(false))
   }
 }
 
 // Verify the Payment (called from PaymentSuccess page after Stripe redirect)
 export async function verifyPayment(sessionId, token, navigate, dispatch) {
-  const toastId = toast.loading("Verifying Payment...")
   dispatch(setPaymentLoading(true))
-
   try {
     const response = await apiConnector(
       "POST",
@@ -83,7 +77,6 @@ export async function verifyPayment(sessionId, token, navigate, dispatch) {
     toast.error(error.response?.data?.message || "Could not verify payment.")
     navigate("/dashboard/cart")
   } finally {
-    toast.dismiss(toastId)
     dispatch(setPaymentLoading(false))
   }
 }

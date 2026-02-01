@@ -41,11 +41,20 @@ export default function ProfileDropdown() {
             </div>
           </Link>
           <div
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault()
+                dispatch(logout(navigate))
+                setOpen(false)
+              }
+            }}
             onClick={() => {
               dispatch(logout(navigate))
               setOpen(false)
             }}
-            className="flex w-full items-center gap-x-1 py-[10px] px-[12px] text-sm text-richblack-100 hover:bg-richblack-700 hover:text-richblack-25"
+            className="flex w-full cursor-pointer items-center gap-x-1 py-[10px] px-[12px] text-sm text-pink-200 transition-colors hover:bg-pink-900/30 hover:text-pink-100"
           >
             <VscSignOut className="text-lg" />
             Logout

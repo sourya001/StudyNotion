@@ -14,6 +14,7 @@ function Chatbot() {
   const [input, setInput] = useState("")
   const [loading, setLoading] = useState(false)
   const messagesEndRef = useRef(null)
+  const chatPanelRef = useRef(null)
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
@@ -40,6 +41,18 @@ function Chatbot() {
     window.addEventListener("openChatbot", handleOpenChatbot)
     return () => window.removeEventListener("openChatbot", handleOpenChatbot)
   }, [token])
+
+  // Close chatbot when user scrolls the page (not when scrolling inside the chat panel)
+  useEffect(() => {
+    if (!open) return
+    const handleScroll = (e) => {
+      if (!chatPanelRef.current?.contains(e.target)) {
+        setOpen(false)
+      }
+    }
+    window.addEventListener("scroll", handleScroll, true)
+    return () => window.removeEventListener("scroll", handleScroll, true)
+  }, [open])
 
   const handleIconClick = () => {
     if (!token) {
@@ -108,6 +121,7 @@ function Chatbot() {
       <AnimatePresence>
         {open && (
           <motion.div
+            ref={chatPanelRef}
             key="chat-panel"
             initial={{ opacity: 0, y: 24, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}

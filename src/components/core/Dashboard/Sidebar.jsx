@@ -57,6 +57,7 @@ export default function Sidebar({ open = false, onClose }) {
           iconName="VscSettingsGear"
         />
         <button
+          type="button"
           onClick={() =>
             setConfirmationModal({
               text1: "Are you sure?",
@@ -65,14 +66,13 @@ export default function Sidebar({ open = false, onClose }) {
               btn2Text: "Cancel",
               btn1Handler: () => dispatch(logout(navigate)),
               btn2Handler: () => setConfirmationModal(null),
+              btn1Danger: true,
             })
           }
-          className="px-8 py-2 text-sm font-medium text-richblack-300"
+          className="flex w-full items-center gap-x-2 px-8 py-2 text-left text-sm font-medium text-pink-200 transition-colors hover:bg-pink-900/20 hover:text-pink-100"
         >
-          <div className="flex items-center gap-x-2">
-            <VscSignOut className="text-lg" />
-            <span>Logout</span>
-          </div>
+          <VscSignOut className="text-lg" />
+          <span>Logout</span>
         </button>
       </div>
     </div>

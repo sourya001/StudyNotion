@@ -354,7 +354,7 @@ function Navbar() {
                   </Link>
                   <button
                     type="button"
-                    className="flex w-full items-center justify-center gap-2 rounded-lg border border-richblack-600 bg-richblack-700 px-4 py-2 text-richblack-5 hover:bg-richblack-600 hover:text-richblack-25"
+                    className="flex w-full items-center justify-center gap-2 rounded-lg border border-pink-600 bg-pink-900/30 px-4 py-2 text-pink-200 transition-colors hover:bg-pink-800/50 hover:text-pink-100"
                     onClick={() => {
                       setMobileMenuOpen(false)
                       dispatch(logout(navigate))
