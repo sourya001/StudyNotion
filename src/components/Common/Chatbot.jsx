@@ -43,7 +43,9 @@ function Chatbot() {
 
   useEffect(() => {
     if (!open) return
+    const isSmallScreen = () => window.matchMedia("(max-width: 639px)").matches
     const handleScroll = (e) => {
+      if (isSmallScreen()) return
       if (!chatPanelRef.current?.contains(e.target)) {
         setOpen(false)
       }
